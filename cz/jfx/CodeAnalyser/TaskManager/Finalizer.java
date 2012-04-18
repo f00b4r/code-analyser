@@ -17,18 +17,13 @@ public class Finalizer extends Thread {
     }
 
     public void run() {
-        while (!complete) {
-            synchronized (this) {
-                try {
-                    wait();
-                } catch (InterruptedException ex) {
-                    System.out.println("Finalizer innterupted!");
-                    complete = true;
-                    break;
-                }
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                System.out.println("Finalizer innterupted!");
             }
         }
-        
         System.out.println("Konec finalizeru!!!");
     }
 }
