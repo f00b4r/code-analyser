@@ -24,6 +24,6 @@ public class FolderStorage implements IStorage {
     }
 
     public synchronized boolean isEmpty() {
-        return folders.size() <= 0;
+        return folders.isEmpty();
     }
 }

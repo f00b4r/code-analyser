@@ -24,6 +24,6 @@ public class FileStorage implements IStorage {
     }
 
     public synchronized boolean isEmpty() {
-        return files.size() <= 0;
+        return files.isEmpty();
     }
 }
