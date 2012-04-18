@@ -62,7 +62,7 @@ public class TaskManager {
     }
 
     /*
-     * Start
+     * TaskManager function
      */
     public void start() {
 
@@ -79,11 +79,15 @@ public class TaskManager {
         } catch (InterruptedException ex) {
             System.out.println("**** PRERUSENO CEKANI NA FINALIZER ****");
         }
-
-
     }
 
-    private void invokeLoaders() {
+    private synchronized void setThreadsInactive(ArrayList<Runner> runners) {
+        for (Runner runner : runners) {
+            runner.interrupt();
+        }
+    }
+
+    private void invokeThreads(ArrayList<Runner> runners) {
         System.out.println("OZIVUJI VLAKNA");
         for (Runner runner : runners) {
             if (runner.getStatus() == Runner.WAITING) {
@@ -98,39 +102,33 @@ public class TaskManager {
         }
     }
 
+    private void complete() {
+        finalizer.setComplete(true);
+        finalizer.interrupt();
+    }
+
+    /*
+     * Loaders functions
+     */
+    private void invokeLoaders() {
+        invokeThreads(runners);
+    }
+
     private boolean isLoadingComplete() {
+        return loadingComplete;
+    }
+
+    public void checkLoadingProcess() {
         if (isFolderStorageEmpty()) {
             for (Runner runner : runners) {
                 if (runner.getStatus() == Runner.RUNNING) {
                     System.out.println(runner.getName() + "stale beziii");
-                    return false;
+                    return;
                 }
             }
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    public void checkLoadingProcess() {
-        if (isLoadingComplete()) {
             loadingComplete = true;
-            setLoadersInactive();
+            setThreadsInactive(runners);
             complete();
-        }
-    }
-
-    private synchronized void setLoadersInactive() {
-        for (Runner runner : runners) {
-            runner.interrupt();
-        }
-    }
-
-    private synchronized void complete() {
-        synchronized (finalizer) {
-            finalizer.setComplete(true);
-            finalizer.notify();
         }
     }
 }
