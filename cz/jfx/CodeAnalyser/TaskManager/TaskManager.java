@@ -13,22 +13,21 @@ import java.util.ArrayList;
  */
 public class TaskManager {
 
-    private ArrayList<Runner> runners = new ArrayList<>();
+    private ArrayList<Runner> loaders = new ArrayList<>();
+    private ArrayList<Runner> readers = new ArrayList<>();
     private Finalizer finalizer = new Finalizer();
     private AnalyserController controller = AnalyserController.getInstance();
     private boolean loadingComplete = false;
     private boolean readingComplete = false;
 
     public void addLoader() {
-        runners.add(new Loader("Browser" + runners.size(), this));
+        Runner r = new Loader("Loader" + loaders.size(), this);
+        r.setFilter(controller.getCodeFilter());
+        loaders.add(r);
     }
 
     public void addReader() {
-        runners.add(new Reader("Reader" + runners.size(), this));
-    }
-
-    public ArrayList<Runner> getRunners() {
-        return runners;
+        readers.add(new Reader("Reader" + readers.size(), this));
     }
 
     /**
@@ -50,9 +49,6 @@ public class TaskManager {
     /**
      * FileStorage
      */
-    public synchronized void nextFile() {
-    }
-
     public synchronized void addFile(File f) {
         controller.getFileStorage().push(f);
     }
@@ -70,10 +66,17 @@ public class TaskManager {
         finalizer.start();
 
         System.out.println("Spoustim vlakna");
-        // spusteni vsech vlaken
-        for (Runner runner : runners) {
-            runner.start();
+
+        // spusteni nacitacich vlaken
+        for (Runner loader : loaders) {
+            loader.start();
         }
+
+        // spusteni ctecich vlaken
+        for (Runner reader : readers) {
+            reader.start();
+        }
+
         try {
             finalizer.join();
         } catch (InterruptedException ex) {
@@ -111,7 +114,7 @@ public class TaskManager {
      * Loaders functions
      */
     private void invokeLoaders() {
-        invokeThreads(runners);
+        invokeThreads(loaders);
     }
 
     private boolean isLoadingComplete() {
@@ -120,14 +123,15 @@ public class TaskManager {
 
     public void checkLoadingProcess() {
         if (isFolderStorageEmpty()) {
-            for (Runner runner : runners) {
+            for (Runner runner : loaders) {
                 if (runner.getStatus() == Runner.RUNNING) {
                     System.out.println(runner.getName() + "stale beziii");
+                    loadingComplete = false;
                     return;
                 }
             }
             loadingComplete = true;
-            setThreadsInactive(runners);
+            setThreadsInactive(loaders);
             complete();
         }
     }
