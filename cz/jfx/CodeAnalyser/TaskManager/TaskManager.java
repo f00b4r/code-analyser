@@ -7,7 +7,6 @@ import cz.jfx.CodeAnalyser.TaskManager.Listeners.FolderListener;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Loader;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Reader;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Runner;
-import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.event.EventListenerList;
@@ -22,57 +21,78 @@ public class TaskManager {
     private ArrayList<Runner> readers;
     private EventListenerList listenerList = new EventListenerList();
     private Finalizer finalizer;
-    private AnalyserController controller = AnalyserController.getInstance();
+    private AnalyserController controller;
     private boolean loadingComplete = false;
     private boolean readingComplete = false;
 
     public TaskManager() {
-        loaders = new ArrayList<>();
-        readers = new ArrayList<>();
-        finalizer = new Finalizer();
+        clean();
+    }
+
+    public void addLoaders(int i) {
+        for (int j = 0; j < i; j++) {
+            addLoader();
+        }
     }
 
     public void addLoader() {
         Runner r = new Loader("Loader" + loaders.size(), this);
-        r.setFilter(controller.getCodeFilter());
+        r.setFilter(getController().getCodeFilter());
         loaders.add(r);
+    }
+
+    public void addReaders(int i) {
+        for (int j = 0; j < i; j++) {
+            addLoader();
+        }
     }
 
     public void addReader() {
         readers.add(new Reader("Reader" + readers.size(), this));
     }
 
+    public AnalyserController getController() {
+        if (controller == null) {
+            controller = AnalyserController.getInstance();
+        }
+        return controller;
+    }
+
+    public void setController(AnalyserController controller) {
+        this.controller = controller;
+    }
+
     /**
      * FolderStorage
      */
     public synchronized File nextFolder() {
-        return controller.getFolderStorage().poll();
+        return getController().getFolderStorage().poll();
     }
 
     public synchronized void addFolder(File f) {
-        controller.getFolderStorage().push(f);
+        getController().getFolderStorage().push(f);
         invokeLoaders();
         fireFolderAdded();
     }
 
     public synchronized boolean isFolderStorageEmpty() {
-        return controller.getFolderStorage().isEmpty();
+        return getController().getFolderStorage().isEmpty();
     }
 
     /**
      * FileStorage
      */
     public synchronized File nextFile(File f) {
-        return controller.getFileStorage().poll();
+        return getController().getFileStorage().poll();
     }
 
     public synchronized void addFile(File f) {
-        controller.getFileStorage().push(f);
+        getController().getFileStorage().push(f);
         fireFileAdded();
     }
 
     public synchronized boolean isFileStorageEmpty() {
-        return controller.getFileStorage().isEmpty();
+        return getController().getFileStorage().isEmpty();
     }
 
     /*
@@ -141,6 +161,12 @@ public class TaskManager {
         fireJobComlete();
     }
 
+    public void clean() {
+        loaders = new ArrayList<>();
+        readers = new ArrayList<>();
+        finalizer = new Finalizer();
+    }
+
     /*
      * Loaders functions
      */
@@ -173,7 +199,7 @@ public class TaskManager {
     private void fireJobComlete() {
         Object[] listeners = listenerList.getListenerList();
         for (int i = 0; i < listeners.length; i += 2) {
-            ((JobListener) listeners[i]).complete();
+            ((JobListener) listeners[i + 1]).complete();
         }
     }
 
@@ -181,7 +207,7 @@ public class TaskManager {
         Object[] listeners = listenerList.getListenerList();
         for (int i = 0; i < listeners.length; i += 2) {
             if (listeners[i] == FileListener.class) {
-                ((FileListener) listeners[i]).added(controller.getFileStorage().size());
+                ((FileListener) listeners[i + 1]).added(getController().getFileStorage().size());
             }
         }
     }
@@ -190,7 +216,7 @@ public class TaskManager {
         Object[] listeners = listenerList.getListenerList();
         for (int i = 0; i < listeners.length; i += 2) {
             if (listeners[i] == FolderListener.class) {
-                ((FileListener) listeners[i]).added(controller.getFolderStorage().size());
+                ((FileListener) listeners[i + 1]).added(getController().getFolderStorage().size());
             }
         }
     }
