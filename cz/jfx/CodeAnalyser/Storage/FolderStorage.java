@@ -30,4 +30,8 @@ public class FolderStorage<E> implements IStorage<E> {
     public Iterator<E> iterator() {
         return folders.iterator();
     }
+
+    public int size() {
+        return folders.size();
+    }
 }

@@ -16,4 +16,6 @@ public interface IStorage<E> {
     public boolean isEmpty();
     
     public Iterator<E> iterator();
+    
+    public int size();
 }

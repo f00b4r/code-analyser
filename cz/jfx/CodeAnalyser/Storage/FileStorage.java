@@ -30,4 +30,8 @@ public class FileStorage<E> implements IStorage<E> {
     public Iterator<E> iterator() {
         return files.iterator();
     }
+
+    public int size() {
+        return files.size();
+    }
 }

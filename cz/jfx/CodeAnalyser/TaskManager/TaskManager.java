@@ -1,11 +1,16 @@
 package cz.jfx.CodeAnalyser.TaskManager;
 
+import cz.jfx.CodeAnalyser.TaskManager.Listeners.JobListener;
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
+import cz.jfx.CodeAnalyser.TaskManager.Listeners.FileListener;
+import cz.jfx.CodeAnalyser.TaskManager.Listeners.FolderListener;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Loader;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Reader;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Runner;
+import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.event.EventListenerList;
 
 /**
  *
@@ -13,12 +18,19 @@ import java.util.ArrayList;
  */
 public class TaskManager {
 
-    private ArrayList<Runner> loaders = new ArrayList<>();
-    private ArrayList<Runner> readers = new ArrayList<>();
-    private Finalizer finalizer = new Finalizer();
+    private ArrayList<Runner> loaders;
+    private ArrayList<Runner> readers;
+    private EventListenerList listenerList = new EventListenerList();
+    private Finalizer finalizer;
     private AnalyserController controller = AnalyserController.getInstance();
     private boolean loadingComplete = false;
     private boolean readingComplete = false;
+
+    public TaskManager() {
+        loaders = new ArrayList<>();
+        readers = new ArrayList<>();
+        finalizer = new Finalizer();
+    }
 
     public void addLoader() {
         Runner r = new Loader("Loader" + loaders.size(), this);
@@ -40,6 +52,7 @@ public class TaskManager {
     public synchronized void addFolder(File f) {
         controller.getFolderStorage().push(f);
         invokeLoaders();
+        fireFolderAdded();
     }
 
     public synchronized boolean isFolderStorageEmpty() {
@@ -49,8 +62,13 @@ public class TaskManager {
     /**
      * FileStorage
      */
+    public synchronized File nextFile(File f) {
+        return controller.getFileStorage().poll();
+    }
+
     public synchronized void addFile(File f) {
         controller.getFileStorage().push(f);
+        fireFileAdded();
     }
 
     public synchronized boolean isFileStorageEmpty() {
@@ -84,6 +102,18 @@ public class TaskManager {
         }
     }
 
+    public void addFileListener(FileListener l) {
+        listenerList.add(FileListener.class, l);
+    }
+
+    public void addFolderListener(FolderListener l) {
+        listenerList.add(FolderListener.class, l);
+    }
+
+    public void addJobListener(JobListener l) {
+        listenerList.add(JobListener.class, l);
+    }
+
     private synchronized void setThreadsInactive(ArrayList<Runner> runners) {
         for (Runner runner : runners) {
             runner.interrupt();
@@ -108,6 +138,7 @@ public class TaskManager {
     private void complete() {
         finalizer.setComplete(true);
         finalizer.interrupt();
+        fireJobComlete();
     }
 
     /*
@@ -133,6 +164,34 @@ public class TaskManager {
             loadingComplete = true;
             setThreadsInactive(loaders);
             complete();
+        }
+    }
+
+    /**
+     *  Listeners perfomance
+     */
+    private void fireJobComlete() {
+        Object[] listeners = listenerList.getListenerList();
+        for (int i = 0; i < listeners.length; i += 2) {
+            ((JobListener) listeners[i]).complete();
+        }
+    }
+
+    private void fireFileAdded() {
+        Object[] listeners = listenerList.getListenerList();
+        for (int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == FileListener.class) {
+                ((FileListener) listeners[i]).added(controller.getFileStorage().size());
+            }
+        }
+    }
+
+    private void fireFolderAdded() {
+        Object[] listeners = listenerList.getListenerList();
+        for (int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == FolderListener.class) {
+                ((FileListener) listeners[i]).added(controller.getFolderStorage().size());
+            }
         }
     }
 }
