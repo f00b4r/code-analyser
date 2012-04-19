@@ -158,7 +158,7 @@ public class TaskManager {
     private void complete() {
         finalizer.setComplete(true);
         finalizer.interrupt();
-        fireJobComlete();
+        fireJobComplete();
     }
 
     public void clean() {
@@ -196,7 +196,7 @@ public class TaskManager {
     /**
      *  Listeners perfomance
      */
-    private void fireJobComlete() {
+    private void fireJobComplete() {
         Object[] listeners = listenerList.getListenerList();
         for (int i = 0; i < listeners.length; i += 2) {
             ((JobListener) listeners[i + 1]).complete();
