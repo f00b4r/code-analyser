@@ -1,6 +1,9 @@
 package cz.jfx.CodeAnalyser.Control;
 
 import cz.jfx.CodeAnalyser.Filters.CodeFilter;
+import cz.jfx.CodeAnalyser.GUI.MainView;
+import cz.jfx.CodeAnalyser.Storage.FileStorage;
+import cz.jfx.CodeAnalyser.Storage.FolderStorage;
 import cz.jfx.CodeAnalyser.Storage.IStorage;
 import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
@@ -16,8 +19,17 @@ public class AnalyserController {
     private IStorage<File> fileStorage;
     private IStorage<File> folderStorage;
     private FileFilter codeFilter = new CodeFilter();
+    private MainView view;
 
     private AnalyserController() {
+    }
+
+    public MainView getView() {
+        return view;
+    }
+
+    public void setView(MainView view) {
+        this.view = view;
     }
 
     public IStorage<File> getFileStorage() {
@@ -55,5 +67,31 @@ public class AnalyserController {
     private static class AnalyserControllerHolder {
 
         private static final AnalyserController INSTANCE = new AnalyserController();
+    }
+
+    public void analyse() {
+
+        // define dependecies
+        setTaskManager(new TaskManager());
+        setFileStorage(new FileStorage<File>());
+        setFolderStorage(new FolderStorage<File>());
+
+        // pridam pridavaci vlakno
+        getTaskManager().addLoader();
+        getTaskManager().addLoader();
+        getTaskManager().addLoader();
+
+
+        // pridam nejaky adresar
+        //getFolderStorage().push(new File("D:/JAVA/ThreadHratky"));
+
+        getFolderStorage().push(view.getSelectedFolder());
+        
+
+        System.out.println("analyse() - begin");
+        TaskManager tm = AnalyserController.getInstance().getTaskManager();
+        tm.start();
+        System.out.println("analyse() - over");
+
     }
 }
