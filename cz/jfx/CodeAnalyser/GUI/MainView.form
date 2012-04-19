@@ -290,7 +290,7 @@
                           <Component id="filesPending" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="90" max="32767" attributes="0"/>
+                  <EmptySpace pref="108" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -324,7 +324,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="foldersScanned">
           <Properties>
-            <Property name="text" type="java.lang.String" value="10"/>
+            <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
@@ -334,7 +334,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="foldersPending">
           <Properties>
-            <Property name="text" type="java.lang.String" value="100"/>
+            <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
@@ -349,12 +349,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="filesScanned">
           <Properties>
-            <Property name="text" type="java.lang.String" value="10"/>
+            <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="filesPending">
           <Properties>
-            <Property name="text" type="java.lang.String" value="100"/>
+            <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
         </Component>
       </SubComponents>

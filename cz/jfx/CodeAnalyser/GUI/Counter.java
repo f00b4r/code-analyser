@@ -1,8 +1,8 @@
 package cz.jfx.CodeAnalyser.GUI;
 
+import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import cz.jfx.CodeAnalyser.TaskManager.Listeners.FileListener;
-import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
-import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 /**
  *
@@ -10,18 +10,26 @@ import javax.swing.JComponent;
  */
 public class Counter {
 
-    private TaskManager tm;
+    public JLabel actual;
+    public JLabel total;
 
-    public Counter(TaskManager tm) {
-        this.tm = tm;
-        tm.addFileListener(new FileListener() {
+    public Counter(JLabel actual, JLabel total) {
+        this.actual = actual;
+        this.total = total;
+        addHandler();
+    }
+
+    private void addHandler() {
+        AnalyserController.getInstance().getTaskManager().addFileListener(new FileListener() {
 
             @Override
             public void added(int count) {
+                actual.setText(String.valueOf(count));
             }
 
             @Override
             public void remove(int count) {
+                actual.setText(String.valueOf(count));
             }
 
             @Override
@@ -29,8 +37,5 @@ public class Counter {
                 System.out.println("****************************** VSEECHNO JE HOTOVO ******************************");
             }
         });
-    }
-
-    public void attachComponent(JComponent c) {
     }
 }

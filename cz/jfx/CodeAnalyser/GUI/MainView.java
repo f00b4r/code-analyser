@@ -1,7 +1,6 @@
 package cz.jfx.CodeAnalyser.GUI;
 
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
-import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -23,12 +22,16 @@ public class MainView extends javax.swing.JFrame {
 
     /** Creates new form MainView */
     public MainView() {
-        initMyComponents();
+        initBeforeComponents();
         initComponents();
+        initAfterComponents();
     }
 
-    private void initMyComponents() {
-        Counter c1 = new Counter(AnalyserController.getInstance().getTaskManager());
+    private void initBeforeComponents() {
+    }
+
+    private void initAfterComponents() {
+        Counter c1 = new Counter(filesPending, filesScanned);
     }
 
     @SuppressWarnings("unchecked")
@@ -157,19 +160,19 @@ public class MainView extends javax.swing.JFrame {
 
         jLabel5.setText("Folders:");
 
-        foldersScanned.setText("10");
+        foldersScanned.setText("0");
 
         jLabel7.setText("/");
 
-        foldersPending.setText("100");
+        foldersPending.setText("0");
 
         jLabel9.setText("/");
 
         jLabel10.setText("Files");
 
-        filesScanned.setText("10");
+        filesScanned.setText("0");
 
-        filesPending.setText("100");
+        filesPending.setText("0");
 
         javax.swing.GroupLayout statsPanelLayout = new javax.swing.GroupLayout(statsPanel);
         statsPanel.setLayout(statsPanelLayout);
@@ -194,7 +197,7 @@ public class MainView extends javax.swing.JFrame {
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(filesPending)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
         statsPanelLayout.setVerticalGroup(
             statsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
