@@ -2,6 +2,7 @@ package cz.jfx.CodeAnalyser.TaskManager.Runners;
 
 import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
+import java.io.FilenameFilter;
 
 /**
  *
@@ -55,7 +56,13 @@ public class Loader extends Runner {
             return;
         }
 
-        File[] objects = folder.listFiles();
+        File[] objects;
+        if (filter != null) {
+            objects = folder.listFiles(filter);
+        } else {
+            objects = folder.listFiles();
+        }
+
         if (objects.length == 0 || objects == null) {
             return;
         }

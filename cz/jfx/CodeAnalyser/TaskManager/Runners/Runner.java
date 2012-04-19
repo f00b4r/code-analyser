@@ -1,6 +1,7 @@
 package cz.jfx.CodeAnalyser.TaskManager.Runners;
 
 import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
+import java.io.FileFilter;
 
 /**
  *
@@ -14,6 +15,25 @@ public class Runner extends Thread {
     protected TaskManager tm;
     protected int status;
     protected boolean running = true;
+    protected FileFilter filter;
+
+    public FileFilter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(FileFilter filter) {
+        this.filter = filter;
+    }
+
+    public Runner(TaskManager tm) {
+        super("Custom-Thread-" + Math.random());
+        this.tm = tm;
+    }
+
+    public Runner(String name, TaskManager tm) {
+        super(name);
+        this.tm = tm;
+    }
 
     public int getStatus() {
         return status;
@@ -36,16 +56,6 @@ public class Runner extends Thread {
     }
 
     public void setTm(TaskManager tm) {
-        this.tm = tm;
-    }
-
-    public Runner(TaskManager tm) {
-        super("Custom-Thread-" + Math.random());
-        this.tm = tm;
-    }
-
-    public Runner(String name, TaskManager tm) {
-        super(name);
         this.tm = tm;
     }
 }
