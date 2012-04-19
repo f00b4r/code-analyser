@@ -18,10 +18,13 @@ public class AnalyserController {
     private TaskManager taskManager;
     private IStorage<File> fileStorage;
     private IStorage<File> folderStorage;
-    private FileFilter codeFilter = new CodeFilter();
+    private FileFilter codeFilter;
     private MainView view;
 
     private AnalyserController() {
+        taskManager = new TaskManager();
+        codeFilter = new CodeFilter();
+        System.out.println("AnalyserController started");
     }
 
     public MainView getView() {
@@ -71,26 +74,19 @@ public class AnalyserController {
 
     public void analyse() {
 
+        taskManager.clean();
+        
         // define dependecies
-        setTaskManager(new TaskManager());
-        setFileStorage(new FileStorage<File>());
-        setFolderStorage(new FolderStorage<File>());
+        fileStorage = new FileStorage<>();
+        folderStorage = new FolderStorage<>();
 
         // pridam pridavaci vlakno
-        getTaskManager().addLoader();
-        getTaskManager().addLoader();
-        getTaskManager().addLoader();
+        taskManager.addLoaders(3);
 
-
-        // pridam nejaky adresar
-        //getFolderStorage().push(new File("D:/JAVA/ThreadHratky"));
-
-        getFolderStorage().push(view.getSelectedFolder());
-        
+        folderStorage.push(view.getSelectedFolder());
 
         System.out.println("analyse() - begin");
-        TaskManager tm = AnalyserController.getInstance().getTaskManager();
-        tm.start();
+        taskManager.start();
         System.out.println("analyse() - over");
 
     }
