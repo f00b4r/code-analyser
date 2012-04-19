@@ -5,6 +5,7 @@ import cz.jfx.CodeAnalyser.Storage.FileStorage;
 import cz.jfx.CodeAnalyser.Storage.FolderStorage;
 import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
+import java.util.Iterator;
 
 /**
  *
@@ -37,8 +38,8 @@ public class CodeAnalyser {
 
         // define dependecies
         ac.setTaskManager(new TaskManager());
-        ac.setFileStorage(new FileStorage());
-        ac.setFolderStorage(new FolderStorage());
+        ac.setFileStorage(new FileStorage<File>());
+        ac.setFolderStorage(new FolderStorage<File>());
 
         // pridam pridavaci vlakno
         ac.getTaskManager().addLoader();
@@ -47,7 +48,7 @@ public class CodeAnalyser {
 
 
         // pridam nejaky adresar
-        ac.getFolderStorage().push(new File("D:/JAVA"));
+        ac.getFolderStorage().push(new File("D:/JAVA/ThreadHratky"));
     }
 
     private void analyse() {
@@ -55,5 +56,13 @@ public class CodeAnalyser {
         TaskManager tm = AnalyserController.getInstance().getTaskManager();
         tm.start();
         System.out.println("analyse() - over");
+        
+        System.out.println("Seznam souboru..");
+        
+        Iterator<File> i = AnalyserController.getInstance().getFileStorage().iterator();
+        while(i.hasNext()) {
+            System.out.println(i.next().getAbsolutePath());
+        }
+        
     }
 }
