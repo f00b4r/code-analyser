@@ -1,8 +1,8 @@
 package cz.jfx.CodeAnalyser.TaskManager.Runners;
 
+import cz.jfx.CodeAnalyser.Control.LoaderController;
 import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
-import java.io.FilenameFilter;
 
 /**
  *
@@ -10,12 +10,16 @@ import java.io.FilenameFilter;
  */
 public class Loader extends Runner {
 
-    public Loader(TaskManager tm) {
+    private LoaderController controller;
+
+    public Loader(TaskManager tm, LoaderController controller) {
         super(tm);
+        this.controller = controller;
     }
 
-    public Loader(String name, TaskManager tm) {
+    public Loader(String name, TaskManager tm, LoaderController controller) {
         super(name, tm);
+        this.controller = controller;
     }
 
     public void run() {
@@ -24,12 +28,12 @@ public class Loader extends Runner {
             setStatus(Runner.RUNNING);
 
             // Checking, if storage is empty..
-            if (tm.isFolderStorageEmpty()) {
+            if (controller.isFolderStorageEmpty()) {
                 // Then waiting..
                 synchronized (this) {
                     try {
                         setStatus(Runner.WAITING);
-                        tm.checkLoadingProcess();
+                        controller.checkLoadingProcess();
                         System.out.println(Thread.currentThread().getName() + "Waiting..");
                         wait();
                         continue;
@@ -43,7 +47,7 @@ public class Loader extends Runner {
             }
 
             // Search and process files + folders
-            search(tm.nextFolder());
+            search(controller.nextFolder());
 
             // Yielding..
             System.out.println(Thread.currentThread().getName() + " - yield()");
@@ -70,10 +74,10 @@ public class Loader extends Runner {
         for (File f : objects) {
             if (f.canRead()) {
                 if (f.isFile()) {
-                    tm.addFile(f);
+                    controller.addFile(f);
                     System.out.println(Thread.currentThread().getName() + " Soubor: " + f.getAbsolutePath());
                 } else if (f.isDirectory()) {
-                    tm.addFolder(f);
+                    controller.addFolder(f);
                     System.out.println(Thread.currentThread().getName() + " Adresar : " + f.getAbsolutePath());
                 }
             }

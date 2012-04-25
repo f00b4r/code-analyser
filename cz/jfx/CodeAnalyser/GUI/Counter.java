@@ -16,26 +16,26 @@ public class Counter {
     public Counter(JLabel actual, JLabel total) {
         this.actual = actual;
         this.total = total;
-        addHandler();
+        //addHandler();
     }
-
-    private void addHandler() {
-        AnalyserController.getInstance().getTaskManager().addFileListener(new FileListener() {
-
-            @Override
-            public void added(int count) {
-                actual.setText(String.valueOf(count));
-            }
-
-            @Override
-            public void remove(int count) {
-                actual.setText(String.valueOf(count));
-            }
-
-            @Override
-            public void complete() {
-                System.out.println("****************************** VSEECHNO JE HOTOVO ******************************");
-            }
-        });
-    }
+//
+//    private void addHandler() {
+//        AnalyserController.getInstance().getTaskManager().addFileListener(new FileListener() {
+//
+//            @Override
+//            public void added(int count) {
+//                actual.setText(String.valueOf(count));
+//            }
+//
+//            @Override
+//            public void remove(int count) {
+//                actual.setText(String.valueOf(count));
+//            }
+//
+//            @Override
+//            public void complete() {
+//                System.out.println("****************************** VSEECHNO JE HOTOVO ******************************");
+//            }
+//        });
+//    }
 }

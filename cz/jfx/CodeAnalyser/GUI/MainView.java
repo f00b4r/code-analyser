@@ -1,6 +1,7 @@
 package cz.jfx.CodeAnalyser.GUI;
 
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
+import cz.jfx.CodeAnalyser.TaskManager.Listeners.FileListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -122,7 +123,7 @@ public class MainView extends javax.swing.JFrame {
             folderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(folderPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scanFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                .addComponent(scanFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(selectFolder)
                 .addContainerGap())
@@ -217,7 +218,7 @@ public class MainView extends javax.swing.JFrame {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        scannButton.setText("jButton1");
+        scannButton.setText("SCAN");
         scannButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scannButtonActionPerformed(evt);

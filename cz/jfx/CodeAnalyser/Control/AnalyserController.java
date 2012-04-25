@@ -16,6 +16,8 @@ import java.io.FileFilter;
 public class AnalyserController {
 
     private TaskManager taskManager;
+    private LoaderController loaderController;
+    private ReaderController readerController;
     private IStorage<File> fileStorage;
     private IStorage<File> folderStorage;
     private FileFilter codeFilter;
@@ -24,6 +26,8 @@ public class AnalyserController {
     private AnalyserController() {
         taskManager = new TaskManager();
         codeFilter = new CodeFilter();
+        loaderController = new LoaderController();
+        //readerController = new ReaderController();
         System.out.println("AnalyserController started");
     }
 
@@ -73,20 +77,17 @@ public class AnalyserController {
     }
 
     public void analyse() {
-
-        taskManager.clean();
-        
         // define dependecies
         fileStorage = new FileStorage<>();
         folderStorage = new FolderStorage<>();
 
-        // pridam pridavaci vlakno
-        taskManager.addLoaders(3);
+        System.out.println("analyse() - begin");
 
         folderStorage.push(view.getSelectedFolder());
 
-        System.out.println("analyse() - begin");
+        loaderController.launch();
         taskManager.start();
+
         System.out.println("analyse() - over");
 
     }

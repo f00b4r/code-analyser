@@ -6,16 +6,6 @@ package cz.jfx.CodeAnalyser.TaskManager;
  */
 public class Finalizer extends Thread {
 
-    private boolean complete = false;
-
-    public boolean isComplete() {
-        return complete;
-    }
-
-    public void setComplete(boolean complete) {
-        this.complete = complete;
-    }
-
     public void run() {
         synchronized (this) {
             try {
