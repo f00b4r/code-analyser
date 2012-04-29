@@ -2,6 +2,7 @@ package cz.jfx.CodeAnalyser;
 
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import cz.jfx.CodeAnalyser.GUI.MainView;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -29,7 +30,7 @@ public class CodeAnalyser {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {

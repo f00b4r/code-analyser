@@ -4,6 +4,7 @@ import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import cz.jfx.CodeAnalyser.TaskManager.Listeners.FileListener;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -287,7 +288,16 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_selectFolderActionPerformed
 
     private void scannButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scannButtonActionPerformed
-        AnalyserController.getInstance().analyse();
+        Thread t = new Thread() {
+
+            public void run() {
+                AnalyserController.getInstance().analyse();
+            }
+        };
+
+        t.setDaemon(false);
+        t.start();
+        //SwingUtilities.invokeLater(t);
     }//GEN-LAST:event_scannButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu fileMenu;
@@ -314,4 +324,9 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JPanel statsPanel;
     private javax.swing.JPanel threadsPanel;
     // End of variables declaration//GEN-END:variables
+    private int x = 0;
+
+    public void increase() {
+        filesPending.setText(++x+"");
+    }
 }

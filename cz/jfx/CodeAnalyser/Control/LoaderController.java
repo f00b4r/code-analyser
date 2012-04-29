@@ -61,7 +61,7 @@ public class LoaderController {
 
     public synchronized void addFile(File f) {
         fileStorage.push(f);
-        //fireFileAdded();
+        fireFileAdded();
     }
 
     public synchronized boolean isFileStorageEmpty() {
@@ -75,5 +75,9 @@ public class LoaderController {
                 tm.complete();
             }
         }
+    }
+
+    private void fireFileAdded() {
+        AnalyserController.getInstance().getView().increase();
     }
 }

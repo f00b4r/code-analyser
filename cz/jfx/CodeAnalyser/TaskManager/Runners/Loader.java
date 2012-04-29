@@ -24,7 +24,7 @@ public class Loader extends Runner {
 
     public void run() {
         while (running) {
-            System.out.println(Thread.currentThread().getName() + " - starting..");
+            //System.out.println(Thread.currentThread().getName() + " - starting..");
             setStatus(Runner.RUNNING);
 
             // Checking, if storage is empty..
@@ -34,11 +34,11 @@ public class Loader extends Runner {
                     try {
                         setStatus(Runner.WAITING);
                         controller.checkLoadingProcess();
-                        System.out.println(Thread.currentThread().getName() + "Waiting..");
+                        //System.out.println(Thread.currentThread().getName() + "Waiting..");
                         wait();
                         continue;
                     } catch (InterruptedException ex) {
-                        System.out.println(Thread.currentThread().getName() + " interrupted!");
+                        //System.out.println(Thread.currentThread().getName() + " interrupted!");
                         setRunning(false);
                         setStatus(Runner.OFF);
                         break;
@@ -50,7 +50,7 @@ public class Loader extends Runner {
             search(controller.nextFolder());
 
             // Yielding..
-            System.out.println(Thread.currentThread().getName() + " - yield()");
+            //System.out.println(Thread.currentThread().getName() + " - yield()");
             yield();
         }
     }
@@ -67,7 +67,7 @@ public class Loader extends Runner {
             objects = folder.listFiles();
         }
 
-        if (objects.length == 0 || objects == null) {
+        if (objects == null || objects.length == 0) {
             return;
         }
 
@@ -75,10 +75,10 @@ public class Loader extends Runner {
             if (f.canRead()) {
                 if (f.isFile()) {
                     controller.addFile(f);
-                    System.out.println(Thread.currentThread().getName() + " Soubor: " + f.getAbsolutePath());
+                    //System.out.println(Thread.currentThread().getName() + " Soubor: " + f.getAbsolutePath());
                 } else if (f.isDirectory()) {
                     controller.addFolder(f);
-                    System.out.println(Thread.currentThread().getName() + " Adresar : " + f.getAbsolutePath());
+                    //System.out.println(Thread.currentThread().getName() + " Adresar : " + f.getAbsolutePath());
                 }
             }
         }
