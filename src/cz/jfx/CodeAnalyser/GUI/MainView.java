@@ -1,7 +1,12 @@
 package cz.jfx.CodeAnalyser.GUI;
 
+import cz.jfx.CodeAnalyser.CodeAnalyser;
+import cz.jfx.CodeAnalyser.Config.Config;
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -29,7 +34,18 @@ public class MainView extends javax.swing.JFrame {
     }
 
     private void initBeforeComponents() {
+        // Sets app icon
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/logo1.png")));
+
+        // Attach closing dialog
+        addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                storeSettings();
+                super.windowClosing(e);
+            }
+        });
     }
 
     private void initAfterComponents() {
@@ -58,7 +74,7 @@ public class MainView extends javax.swing.JFrame {
         filtersButton = new javax.swing.JButton();
         graphButton = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        jButton1 = new javax.swing.JButton();
+        aboutButton = new javax.swing.JButton();
         exitButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -68,6 +84,7 @@ public class MainView extends javax.swing.JFrame {
 
         selectFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/search.png"))); // NOI18N
         selectFolder.setToolTipText("Browse local computer");
+        selectFolder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         selectFolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectFolderActionPerformed(evt);
@@ -194,18 +211,18 @@ public class MainView extends javax.swing.JFrame {
         menuToolbar.add(graphButton);
         menuToolbar.add(jSeparator2);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/info.png"))); // NOI18N
-        jButton1.setToolTipText("About analyser");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        aboutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/info.png"))); // NOI18N
+        aboutButton.setToolTipText("About analyser");
+        aboutButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        aboutButton.setFocusable(false);
+        aboutButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        aboutButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        aboutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                aboutButtonActionPerformed(evt);
             }
         });
-        menuToolbar.add(jButton1);
+        menuToolbar.add(aboutButton);
 
         exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/exit.png"))); // NOI18N
         exitButton.setToolTipText("Exit program");
@@ -228,9 +245,9 @@ public class MainView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(scanFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                        .addComponent(scanFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectFolder))
+                        .addComponent(selectFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
@@ -247,7 +264,7 @@ public class MainView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(scanFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(selectFolder))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -292,14 +309,14 @@ public class MainView extends javax.swing.JFrame {
         t.start();
     }//GEN-LAST:event_scannButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
         AboutDialog about = new AboutDialog(this, false);
         about.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_aboutButtonActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         dispose();
-        AnalyserController.logger.exiting("MainView", "close program");
+        storeSettings();
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
 
@@ -324,14 +341,21 @@ public class MainView extends javax.swing.JFrame {
     public void hideLoading() {
         loadingBar.setVisible(false);
     }
+
+    public void storeSettings() {
+        AnalyserController.logger.entering("MainView", "storeSettings");
+        String filename = Config.getProperty("Settings.configFile") == null ? CodeAnalyser.CONFIG_FILE : Config.getProperty("Settings.configFile");
+        Config.getInstance().store(filename);
+        AnalyserController.logger.exiting("MainView", "storeSettings");
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aboutButton;
     private javax.swing.JTable dataTable;
     private javax.swing.JButton exitButton;
     private javax.swing.JButton filtersButton;
     private javax.swing.JButton graphButton;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JToolBar infoToolbar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;

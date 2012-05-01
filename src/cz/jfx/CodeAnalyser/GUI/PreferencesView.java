@@ -10,6 +10,13 @@
  */
 package cz.jfx.CodeAnalyser.GUI;
 
+import cz.jfx.CodeAnalyser.CodeAnalyser;
+import cz.jfx.CodeAnalyser.Config.Config;
+import cz.jfx.CodeAnalyser.Control.AnalyserController;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author Felix
@@ -21,12 +28,24 @@ public class PreferencesView extends javax.swing.JFrame {
     /** Creates new form PreferencesView */
     public PreferencesView(MainView mainView) {
         parent = mainView;
-        initMyComponents();
+        initBeforeComponents();
         initComponents();
+        initAfterComponents();
     }
 
-    private void initMyComponents() {
+    private void initBeforeComponents() {
         setIconImage(parent.getIconImage());
+    }
+
+    private void initAfterComponents() {
+        String loaders = Config.getProperty("Threads.loaders");
+        if (loaders != null) {
+            loadersSpinner.setValue(Integer.parseInt(loaders));
+        }
+        String readers = Config.getProperty("Threads.readers");
+        if (readers != null) {
+            readersSpinner.setValue(Integer.parseInt(readers));
+        }
     }
 
     /** This method is called from within the constructor to
@@ -57,15 +76,15 @@ public class PreferencesView extends javax.swing.JFrame {
 
         jLabel2.setText("Readers:");
 
-        loadersSpinner.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                loadersSpinnerPropertyChange(evt);
+        loadersSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                loadersSpinnerStateChanged(evt);
             }
         });
 
-        readersSpinner.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                readersSpinnerPropertyChange(evt);
+        readersSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                readersSpinnerStateChanged(evt);
             }
         });
 
@@ -75,14 +94,14 @@ public class PreferencesView extends javax.swing.JFrame {
             threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(threadsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(readersSpinner)
-                    .addComponent(loadersSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(loadersSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(readersSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         threadsPanelLayout.setVerticalGroup(
             threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,40 +109,52 @@ public class PreferencesView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(loadersSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(threadsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loadersSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(readersSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings path"));
+        settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Config file"));
 
-        settingsButton.setText("jButton1");
+        settingsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/refresh2.png"))); // NOI18N
+        settingsButton.setText("Load");
+        settingsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        settingsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingsButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
         settingsPanel.setLayout(settingsPanelLayout);
         settingsPanelLayout.setHorizontalGroup(
             settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(settingsPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(settingsPath, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(settingsButton)
+                .addComponent(settingsPath, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(settingsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         settingsPanelLayout.setVerticalGroup(
             settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(settingsPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(settingsButton))
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(settingsButton)
+                    .addComponent(settingsPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        saveButton.setText("Save");
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/save2.png"))); // NOI18N
+        saveButton.setToolTipText("Save settings");
+        saveButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,11 +163,11 @@ public class PreferencesView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(settingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(threadsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
-                        .addComponent(saveButton))
-                    .addComponent(settingsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(threadsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -144,24 +175,66 @@ public class PreferencesView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(settingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(threadsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saveButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(threadsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-427)/2, (screenSize.height-232)/2, 427, 232);
+        setBounds((screenSize.width-371)/2, (screenSize.height-198)/2, 371, 198);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadersSpinnerPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_loadersSpinnerPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_loadersSpinnerPropertyChange
+    private void readersSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_readersSpinnerStateChanged
+        int v = (int) readersSpinner.getValue();
+        if (v > 5) {
+            readersSpinner.setValue(v = 5);
+        }
+        if (v < 0) {
+            readersSpinner.setValue(v = 0);
+        }
+        Config.saveProperty("Threads.readers", String.valueOf(v));
+    }//GEN-LAST:event_readersSpinnerStateChanged
 
-    private void readersSpinnerPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_readersSpinnerPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_readersSpinnerPropertyChange
+    private void loadersSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_loadersSpinnerStateChanged
+        int v = (int) loadersSpinner.getValue();
+        if (v > 5) {
+            loadersSpinner.setValue(v = 5);
+        }
+        if (v < 0) {
+            loadersSpinner.setValue(v = 0);
+        }
+        Config.saveProperty("Threads.loaders", String.valueOf(v));
+    }//GEN-LAST:event_loadersSpinnerStateChanged
+
+    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        int val = fileChooser.showDialog(this, "Open & Save");
+
+        if (val == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (file.exists()) {
+                Config.saveProperty("Settings.configFile", file.getAbsolutePath());
+                settingsPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            } else {
+                try {
+                    file.createNewFile();
+                    Config.saveProperty("Settings.configFile", file.getAbsolutePath());
+                    settingsPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                } catch (IOException ex) {
+                    AnalyserController.logger.warning("Error with creating new config file");
+                    AnalyserController.logger.warning(ex.getMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_settingsButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        String filename = Config.getProperty("Settings.configFile") == null ? CodeAnalyser.CONFIG_FILE : Config.getProperty("Settings.configFile");
+        Config.getInstance().store(filename);
+    }//GEN-LAST:event_saveButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
