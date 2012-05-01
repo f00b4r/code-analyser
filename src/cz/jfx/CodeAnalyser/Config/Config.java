@@ -46,7 +46,7 @@ public class Config {
         AnalyserController.logger.log(Level.WARNING, "Key {0} not found in properties", key);
         return null;
     }
-    
+
     /**
      * Sets a Object o to String key
      * @param key
@@ -67,16 +67,18 @@ public class Config {
             if (configFile.exists()) {
                 // if yes, load custom settings
                 properties.load(new FileInputStream(filename));
-            } else {
-                // if not, store default settings
-                storeDefaults(defaults);
-                store(filename);
             }
-
         } catch (IOException e) {
             AnalyserController.logger.warning("load fail");
             AnalyserController.logger.warning(e.getMessage());
         }
+    }
+
+    /**
+     * Process when application starts
+     */
+    public void startup() {
+        loadDefaults(defaults);
     }
 
     /**
@@ -85,7 +87,7 @@ public class Config {
      */
     public void store(String filename) {
         try {
-            properties.store(new FileOutputStream(filename), "CodeAnalyse: default settings");
+            properties.store(new FileOutputStream(filename), "CodeAnalyse: settings");
         } catch (IOException e) {
             AnalyserController.logger.warning("store fail");
             AnalyserController.logger.warning(e.getMessage());
@@ -96,7 +98,7 @@ public class Config {
      * Fill first defaults data
      * @param resource 
      */
-    private void storeDefaults(ResourceBundle resource) {
+    private void loadDefaults(ResourceBundle resource) {
         Enumeration<String> keys = resource.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();

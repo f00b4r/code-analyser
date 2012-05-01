@@ -12,13 +12,13 @@ import org.pushingpixels.substance.api.skin.SubstanceModerateLookAndFeel;
  */
 public class CodeAnalyser {
 
-    public static final String CONFIG_FILE = "./config.dat";
+    public static final String CONFIG_FILE = "./default.config";
 
     public static void main(String[] args) {
         CodeAnalyser ca = new CodeAnalyser();
 
         // Load custom/defaul settings
-        Config.getInstance().load(CONFIG_FILE);
+        Config.getInstance().startup();
 
         // start GUI & main controller
         ca.start();
