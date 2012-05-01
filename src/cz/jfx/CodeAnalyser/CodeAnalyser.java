@@ -1,5 +1,6 @@
 package cz.jfx.CodeAnalyser;
 
+import cz.jfx.CodeAnalyser.Config.Config;
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import cz.jfx.CodeAnalyser.GUI.MainView;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -11,8 +12,13 @@ import org.pushingpixels.substance.api.skin.SubstanceModerateLookAndFeel;
  */
 public class CodeAnalyser {
 
+    public static final String CONFIG_FILE = "./config.dat";
+
     public static void main(String[] args) {
         CodeAnalyser ca = new CodeAnalyser();
+
+        // Load custom/defaul settings
+        Config.getInstance().load(CONFIG_FILE);
 
         // start GUI & main controller
         ca.start();
