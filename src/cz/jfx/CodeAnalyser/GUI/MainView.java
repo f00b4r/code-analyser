@@ -1,6 +1,7 @@
 package cz.jfx.CodeAnalyser.GUI;
 
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
+import java.awt.Toolkit;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -28,6 +29,7 @@ public class MainView extends javax.swing.JFrame {
     }
 
     private void initBeforeComponents() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/logo1.png")));
     }
 
     private void initAfterComponents() {
@@ -39,7 +41,7 @@ public class MainView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        scannButton = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
         scanFolder = new javax.swing.JTextField();
         selectFolder = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -49,28 +51,22 @@ public class MainView extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         dataTable = new javax.swing.JTable();
-        menu = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        fileMenuExit = new javax.swing.JMenuItem();
-        optionsMenu = new javax.swing.JMenu();
-        optionsMenuPreferences = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        menuToolbar = new javax.swing.JToolBar();
+        scannButton = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        settingsButton = new javax.swing.JButton();
+        filtersButton = new javax.swing.JButton();
+        graphButton = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        jButton1 = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CodeAnalyser");
 
-        scannButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/inspect.png"))); // NOI18N
-        scannButton.setBorderPainted(false);
-        scannButton.setContentAreaFilled(false);
-        scannButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scannButtonActionPerformed(evt);
-            }
-        });
-
         scanFolder.setText("Select your folder..");
 
-        selectFolder.setText("SELECT");
+        selectFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/search.png"))); // NOI18N
         selectFolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectFolderActionPerformed(evt);
@@ -96,7 +92,7 @@ public class MainView extends javax.swing.JFrame {
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(infoPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(infoToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+                .addComponent(infoToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                 .addContainerGap())
         );
         infoPanelLayout.setVerticalGroup(
@@ -138,82 +134,131 @@ public class MainView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(dataTable);
 
-        fileMenu.setText("File");
+        menuToolbar.setBackground(new java.awt.Color(153, 180, 209));
+        menuToolbar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        menuToolbar.setFloatable(false);
+        menuToolbar.setRollover(true);
 
-        fileMenuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        fileMenuExit.setText("Exit");
-        fileMenuExit.addActionListener(new java.awt.event.ActionListener() {
+        scannButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/inspect.png"))); // NOI18N
+        scannButton.setToolTipText("Analyse code");
+        scannButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        scannButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileMenuExitActionPerformed(evt);
+                scannButtonActionPerformed(evt);
             }
         });
-        fileMenu.add(fileMenuExit);
+        menuToolbar.add(scannButton);
 
-        menu.add(fileMenu);
+        jSeparator3.setPreferredSize(new java.awt.Dimension(30, 30));
+        jSeparator3.setRequestFocusEnabled(false);
+        menuToolbar.add(jSeparator3);
 
-        optionsMenu.setText("Options");
-
-        optionsMenuPreferences.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
-        optionsMenuPreferences.setText("Preferences");
-        optionsMenuPreferences.addActionListener(new java.awt.event.ActionListener() {
+        settingsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/settings.png"))); // NOI18N
+        settingsButton.setToolTipText("Settings and options");
+        settingsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        settingsButton.setFocusable(false);
+        settingsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        settingsButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        settingsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                optionsMenuPreferencesActionPerformed(evt);
+                settingsButtonActionPerformed(evt);
             }
         });
-        optionsMenu.add(optionsMenuPreferences);
+        menuToolbar.add(settingsButton);
 
-        menu.add(optionsMenu);
+        filtersButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/filters.png"))); // NOI18N
+        filtersButton.setToolTipText("Code filters");
+        filtersButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        filtersButton.setFocusable(false);
+        filtersButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        filtersButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        filtersButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filtersButtonActionPerformed(evt);
+            }
+        });
+        menuToolbar.add(filtersButton);
 
-        jMenu1.setText("jMenu1");
-        menu.add(jMenu1);
+        graphButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/graph.png"))); // NOI18N
+        graphButton.setToolTipText("Generate graph");
+        graphButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        graphButton.setFocusable(false);
+        graphButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        graphButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        graphButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                graphButtonActionPerformed(evt);
+            }
+        });
+        menuToolbar.add(graphButton);
+        menuToolbar.add(jSeparator2);
 
-        setJMenuBar(menu);
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/info.png"))); // NOI18N
+        jButton1.setToolTipText("About analyser");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        menuToolbar.add(jButton1);
+
+        exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/exit.png"))); // NOI18N
+        exitButton.setToolTipText("Exit program");
+        exitButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exitButton.setFocusable(false);
+        exitButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        exitButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
+        menuToolbar.add(exitButton);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(scanFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(selectFolder)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(scannButton))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 470, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(scanFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(selectFolder))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(menuToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(menuToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(scanFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(selectFolder)
-                    .addComponent(scannButton))
+                    .addComponent(selectFolder))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-426)/2, (screenSize.height-406)/2, 426, 406);
     }// </editor-fold>//GEN-END:initComponents
 
     private void selectFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFolderActionPerformed
@@ -246,38 +291,57 @@ public class MainView extends javax.swing.JFrame {
         t.start();
     }//GEN-LAST:event_scannButtonActionPerformed
 
-    private void fileMenuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuExitActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AboutDialog about = new AboutDialog(this, false);
+        about.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         dispose();
-        AnalyserController.logger.exiting("MainView", "fileMenuExitActionPerformed");
+        AnalyserController.logger.exiting("MainView", "close program");
         System.exit(0);
-    }//GEN-LAST:event_fileMenuExitActionPerformed
+    }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
+        PreferencesView view = new PreferencesView(this);
+        view.setVisible(true);
+    }//GEN-LAST:event_settingsButtonActionPerformed
+
+    private void filtersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersButtonActionPerformed
+        FiltersView view = new FiltersView(this);
+        view.setVisible(true);
+    }//GEN-LAST:event_filtersButtonActionPerformed
+
+    private void graphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_graphButtonActionPerformed
 
     public void showLoading() {
         loadingBar.setVisible(true);
     }
-    
+
     public void hideLoading() {
         loadingBar.setVisible(false);
     }
-    
-    private void optionsMenuPreferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsMenuPreferencesActionPerformed
-    }//GEN-LAST:event_optionsMenuPreferencesActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable dataTable;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenuItem fileMenuExit;
+    private javax.swing.JButton exitButton;
+    private javax.swing.JButton filtersButton;
+    private javax.swing.JButton graphButton;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JToolBar infoToolbar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JLabel loadingBar;
-    private javax.swing.JMenuBar menu;
-    private javax.swing.JMenu optionsMenu;
-    private javax.swing.JMenuItem optionsMenuPreferences;
+    private javax.swing.JToolBar menuToolbar;
     private javax.swing.JTextField scanFolder;
     private javax.swing.JButton scannButton;
     private javax.swing.JButton selectFolder;
+    private javax.swing.JButton settingsButton;
     // End of variables declaration//GEN-END:variables
 }
