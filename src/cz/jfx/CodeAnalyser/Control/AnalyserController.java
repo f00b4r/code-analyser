@@ -51,8 +51,8 @@ public class AnalyserController {
         loaderController = new LoaderController(this);
         readerController = new ReaderController(this);
 
-        //Config.getInstance().load("./config.dat");
         logger.fine("AnalyserController started");
+
     }
 
     /**
@@ -111,35 +111,66 @@ public class AnalyserController {
         return taskManager;
     }
 
+    /**
+     * Sets the TaskManager for job monitoring
+     * @param taskManager 
+     */
     public void setTaskManager(TaskManager taskManager) {
         this.taskManager = taskManager;
     }
 
+    /**
+     * Gets a CodeFilter (according to extensions)
+     * @return 
+     */
     public FileFilter getCodeFilter() {
         return codeFilter;
     }
 
+    /**
+     * Return instance of AnalyseController (Context)
+     * @return 
+     */
     public static AnalyserController getInstance() {
         return AnalyserControllerHolder.INSTANCE;
     }
 
+    /**
+     * InstanceHolder
+     */
     private static class AnalyserControllerHolder {
 
         private static final AnalyserController INSTANCE = new AnalyserController();
     }
 
+    /**
+     * Adds a EventListener 
+     * @param t
+     * @param listener 
+     */
     public void addListener(Class t, EventListener listener) {
         listeners.add(t, listener);
     }
 
+    /**
+     * Return the LoaderController
+     * @return 
+     */
     public LoaderController getLoaderController() {
         return loaderController;
     }
 
+    /**
+     * Return the ReaderController
+     * @return 
+     */
     public ReaderController getReaderController() {
         return readerController;
     }
 
+    /**
+     * Clean up storages
+     */
     private void cleanStorages() {
         folderStorage.clear();
         fileStorage.clear();
