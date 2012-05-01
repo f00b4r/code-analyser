@@ -1,5 +1,7 @@
 package cz.jfx.CodeAnalyser.GUI;
 
+import cz.jfx.CodeAnalyser.Config.Config;
+
 /**
  *
  * @author Felix
@@ -24,22 +26,26 @@ public class AboutDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        versionLabel = new javax.swing.JLabel();
+        vendorLabel = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("About CodeAnalyser");
+        setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24));
         jLabel1.setText("CodeAnalyser");
 
         jLabel2.setText("Version:");
 
         jLabel3.setText("Vendor:");
 
-        jLabel4.setText("0.8");
+        versionLabel.setText(Config.getValue("Application.version"));
 
-        jLabel5.setText("Milan Felix Šulc <sulcmil1@fel.cvut.cz>");
+        vendorLabel.setText(Config.getValue("Application.vendor"));
+
+        emailLabel.setText(Config.getValue("Application.vendor.email"));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,9 +61,12 @@ public class AboutDialog extends javax.swing.JDialog {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4))))
-                .addContainerGap(40, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(vendorLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(emailLabel))
+                            .addComponent(versionLabel))))
+                .addGap(148, 148, 148))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -67,23 +76,24 @@ public class AboutDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel4))
+                    .addComponent(versionLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel5))
+                    .addComponent(vendorLabel)
+                    .addComponent(emailLabel))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-317)/2, (screenSize.height-156)/2, 317, 156);
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel vendorLabel;
+    private javax.swing.JLabel versionLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -67,6 +67,7 @@ public class MainView extends javax.swing.JFrame {
         scanFolder.setText("Select your folder..");
 
         selectFolder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/search.png"))); // NOI18N
+        selectFolder.setToolTipText("Browse local computer");
         selectFolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectFolderActionPerformed(evt);
