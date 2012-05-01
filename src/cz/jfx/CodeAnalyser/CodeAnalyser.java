@@ -27,7 +27,7 @@ public class CodeAnalyser {
                     javax.swing.UIManager.setLookAndFeel(new SubstanceModerateLookAndFeel());
                 } catch (UnsupportedLookAndFeelException ex) {
                 }
-                
+
                 MainView mv = new MainView();
                 AnalyserController.getInstance().setView(mv);
                 mv.setVisible(true);
