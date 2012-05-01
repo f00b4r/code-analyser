@@ -32,8 +32,14 @@ public class AnalyserController {
     public EventListenerList listeners = new EventListenerList();
     public static final Logger logger = Logger.getLogger("CodeAnalyser");
 
+    /**
+     * Private constructor,
+     * idea of singleton a.k.a MainController
+     */
     private AnalyserController() {
         try {
+            // Init Logger handle 
+            // and standalone logger
             FileHandler fileHandler = new FileHandler("analyser.log");
             fileHandler.setFormatter(new SimpleFormatter());
             logger.setLevel(Level.ALL);
@@ -41,35 +47,66 @@ public class AnalyserController {
         } catch (IOException | SecurityException ex) {
         }
 
+        // Set up 
         loaderController = new LoaderController(this);
         readerController = new ReaderController(this);
+
+        //Config.getInstance().load("./config.dat");
         logger.fine("AnalyserController started");
     }
 
+    /**
+     * Gets a MainView 
+     * @return 
+     */
     public MainView getView() {
         return view;
     }
 
+    /**
+     * Sets the MainView
+     * @param view 
+     */
     public void setView(MainView view) {
         this.view = view;
     }
 
+    /**
+     * Gets a storage for files
+     * @return 
+     */
     public IStorage<File> getFileStorage() {
         return fileStorage;
     }
 
+    /**
+     * Sets the storage for files
+     * @param fileStorage 
+     */
     public void setFileStorage(IStorage<File> fileStorage) {
         this.fileStorage = fileStorage;
     }
 
+    /**
+     * Gets a storage for folders
+     * @return 
+     */
     public IStorage<File> getFolderStorage() {
         return folderStorage;
     }
 
+    /**
+     * Sets the storage for folders
+     * @param folderStorage 
+     */
     public void setFolderStorage(IStorage<File> folderStorage) {
         this.folderStorage = folderStorage;
     }
 
+    /**
+     * Gets a TaskManager for job monitoring
+     * @return 
+     */
     public TaskManager getTaskManager() {
         return taskManager;
     }
@@ -78,12 +115,12 @@ public class AnalyserController {
         this.taskManager = taskManager;
     }
 
-    public static AnalyserController getInstance() {
-        return AnalyserControllerHolder.INSTANCE;
-    }
-
     public FileFilter getCodeFilter() {
         return codeFilter;
+    }
+
+    public static AnalyserController getInstance() {
+        return AnalyserControllerHolder.INSTANCE;
     }
 
     private static class AnalyserControllerHolder {
@@ -108,6 +145,9 @@ public class AnalyserController {
         fileStorage.clear();
     }
 
+    /**
+     * Method for complex analyse, starts all importat services and dependencies
+     */
     public void analyse() {
         logger.entering("AnalyserController", "analyse");
 
