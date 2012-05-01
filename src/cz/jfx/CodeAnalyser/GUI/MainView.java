@@ -6,7 +6,6 @@ import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 

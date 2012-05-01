@@ -21,7 +21,7 @@ import javax.swing.event.EventListenerList;
  * @author Felix
  */
 public class AnalyserController {
-
+    
     private TaskManager taskManager = new TaskManager();
     private LoaderController loaderController;
     private ReaderController readerController;
@@ -29,7 +29,13 @@ public class AnalyserController {
     private IStorage<File> folderStorage = new FolderStorage<>();
     private FileFilter codeFilter = new CodeFilter();
     private MainView view;
+    /**
+     * Storage of Analyse listeners
+     */
     public EventListenerList listeners = new EventListenerList();
+    /**
+     * Logging utils
+     */
     public static final Logger logger = Logger.getLogger("CodeAnalyser");
 
     /**
@@ -50,9 +56,8 @@ public class AnalyserController {
         // Set up 
         loaderController = new LoaderController(this);
         readerController = new ReaderController(this);
-
-        logger.fine("AnalyserController started");
-
+        
+        logger.finer("AnalyserController started");
     }
 
     /**
@@ -139,7 +144,7 @@ public class AnalyserController {
      * InstanceHolder
      */
     private static class AnalyserControllerHolder {
-
+        
         private static final AnalyserController INSTANCE = new AnalyserController();
     }
 
@@ -181,14 +186,18 @@ public class AnalyserController {
      */
     public void analyse() {
         logger.entering("AnalyserController", "analyse");
-
+        
         cleanStorages();
-
-        folderStorage.push(view.getSelectedFolder());
-        loaderController.init();
-        taskManager.start();
-
+        File f = view.getSelectedFolder();
+        if (f.exists() && f.isDirectory() && f.canRead()) {
+            folderStorage.push(f);
+            loaderController.init();
+            taskManager.start();
+        } else {
+            logger.log(Level.SEVERE, f.getAbsolutePath() + " doesnt exists, or isnt folder or cant read");
+        }
+        
         logger.exiting("AnalyserController", "analyse");
-
+        
     }
 }

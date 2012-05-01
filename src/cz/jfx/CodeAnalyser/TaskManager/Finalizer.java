@@ -9,13 +9,14 @@ import cz.jfx.CodeAnalyser.Control.AnalyserController;
 public class Finalizer extends Thread {
 
     public void run() {
+        AnalyserController.logger.entering("Finalizer", "run");
         synchronized (this) {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                AnalyserController.logger.info("Finalizer innterupted!");
+                AnalyserController.logger.fine("Finalizer intterupted!");
             }
         }
-        AnalyserController.logger.fine("Konec finalizeru!!!");
+        AnalyserController.logger.exiting("Finalizer", "run");
     }
 }

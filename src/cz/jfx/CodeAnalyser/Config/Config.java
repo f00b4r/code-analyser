@@ -30,7 +30,7 @@ public class Config {
         if (instance.application.containsKey(key)) {
             return instance.application.getString(key);
         }
-        AnalyserController.logger.log(Level.WARNING, "Key {0} not found in bundle", key);
+        AnalyserController.logger.log(Level.CONFIG, "Key {0} not found in bundle", key);
         return null;
     }
 
@@ -43,7 +43,7 @@ public class Config {
         if (instance.properties.containsKey(key)) {
             return instance.properties.getProperty(key);
         }
-        AnalyserController.logger.log(Level.WARNING, "Key {0} not found in properties", key);
+        AnalyserController.logger.log(Level.CONFIG, "Key {0} not found in properties", key);
         return null;
     }
 
@@ -69,8 +69,7 @@ public class Config {
                 properties.load(new FileInputStream(filename));
             }
         } catch (IOException e) {
-            AnalyserController.logger.warning("load fail");
-            AnalyserController.logger.warning(e.getMessage());
+            AnalyserController.logger.log(Level.CONFIG, "Load fail: {0}", e.getMessage());
         }
     }
 
@@ -89,8 +88,7 @@ public class Config {
         try {
             properties.store(new FileOutputStream(filename), "CodeAnalyse: settings");
         } catch (IOException e) {
-            AnalyserController.logger.warning("store fail");
-            AnalyserController.logger.warning(e.getMessage());
+            AnalyserController.logger.log(Level.CONFIG, "Store fail: {0}", e.getMessage());
         }
     }
 

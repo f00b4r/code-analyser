@@ -27,22 +27,22 @@ public class TaskManager {
      * TaskManager function
      */
     public void start() {
+        AnalyserController.logger.entering("TaskManager", "start");
 
-        AnalyserController.logger.fine("Spousti finalizer");
         finalizer.start();
 
-        AnalyserController.logger.finer("Spoustim vlakna");
-
         // spusteni nacitacich vlaken
+        AnalyserController.logger.fine("Run threads");
         run();
 
         try {
             finalizer.join();
         } catch (InterruptedException ex) {
-            AnalyserController.logger.severe("**** PRERUSENO CEKANI NA FINALIZER ****");
+            AnalyserController.logger.warning("TaskManager intterupted");
         }
 
         clean();
+        AnalyserController.logger.exiting("TaskManager", "start");
     }
 
     public synchronized void closeJob(Class t) {
@@ -64,12 +64,12 @@ public class TaskManager {
     }
 
     public void invokeJob(Class t) {
-        AnalyserController.logger.finer("OZIVUJI JOB");
+        AnalyserController.logger.fine("Job invoking");
         for (Runner job : jobs) {
             if (job.getClass() == t && job.getStatus() == Runner.WAITING) {
                 // invoke only one waiting job..
                 synchronized (job) {
-                    AnalyserController.logger.log(Level.FINE, "Notify(){0}", job.getName());
+                    AnalyserController.logger.log(Level.FINER, "{0} - notify", job.getName());
                     job.setRunning(true);
                     job.notify();
                 }
@@ -87,14 +87,15 @@ public class TaskManager {
     public synchronized void complete() {
         for (Runner job : jobs) {
             if (job.isRunning()) {
-                job.interrupt();
+                // Any job, still running
+                return;
             }
         }
         finalizer.interrupt();
     }
 
     private void clean() {
-        AnalyserController.logger.finest("Clean TM");
+        AnalyserController.logger.finer("Clean TaskManager");
         jobs = new ArrayList<>();
         finalizer = new Finalizer();
     }

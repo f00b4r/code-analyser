@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * PreferencesView.java
- *
- * Created on 30.4.2012, 19:27:20
- */
 package cz.jfx.CodeAnalyser.GUI;
 
 import cz.jfx.CodeAnalyser.CodeAnalyser;
@@ -15,6 +5,7 @@ import cz.jfx.CodeAnalyser.Config.Config;
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 import javax.swing.JFileChooser;
 
 /**
@@ -38,14 +29,7 @@ public class PreferencesView extends javax.swing.JFrame {
     }
 
     private void initAfterComponents() {
-        String loaders = Config.getProperty("Threads.loaders");
-        if (loaders != null) {
-            loadersSpinner.setValue(Integer.parseInt(loaders));
-        }
-        String readers = Config.getProperty("Threads.readers");
-        if (readers != null) {
-            readersSpinner.setValue(Integer.parseInt(readers));
-        }
+        loadSettings();
     }
 
     /** This method is called from within the constructor to
@@ -191,8 +175,8 @@ public class PreferencesView extends javax.swing.JFrame {
         if (v > 5) {
             readersSpinner.setValue(v = 5);
         }
-        if (v < 0) {
-            readersSpinner.setValue(v = 0);
+        if (v < 1) {
+            readersSpinner.setValue(v = 1);
         }
         Config.saveProperty("Threads.readers", String.valueOf(v));
     }//GEN-LAST:event_readersSpinnerStateChanged
@@ -202,8 +186,8 @@ public class PreferencesView extends javax.swing.JFrame {
         if (v > 5) {
             loadersSpinner.setValue(v = 5);
         }
-        if (v < 0) {
-            loadersSpinner.setValue(v = 0);
+        if (v < 1) {
+            loadersSpinner.setValue(v = 1);
         }
         Config.saveProperty("Threads.loaders", String.valueOf(v));
     }//GEN-LAST:event_loadersSpinnerStateChanged
@@ -216,24 +200,38 @@ public class PreferencesView extends javax.swing.JFrame {
         if (val == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             if (file.exists()) {
+                Config.getInstance().load(file.getAbsolutePath());
                 Config.saveProperty("Settings.configFile", file.getAbsolutePath());
                 settingsPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                loadSettings();
             } else {
                 try {
                     file.createNewFile();
                     Config.saveProperty("Settings.configFile", file.getAbsolutePath());
                     settingsPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 } catch (IOException ex) {
-                    AnalyserController.logger.warning("Error with creating new config file");
-                    AnalyserController.logger.warning(ex.getMessage());
+                    AnalyserController.logger.log(Level.WARNING, "Error with creating new config file: {0}", ex.getMessage());
                 }
             }
         }
     }//GEN-LAST:event_settingsButtonActionPerformed
 
+    private void loadSettings() {
+        String loaders = Config.getProperty("Threads.loaders");
+        if (loaders != null) {
+            loadersSpinner.setValue(Integer.parseInt(loaders));
+        }
+
+        String readers = Config.getProperty("Threads.readers");
+        if (readers != null) {
+            readersSpinner.setValue(Integer.parseInt(readers));
+        }
+    }
+
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         String filename = Config.getProperty("Settings.configFile") == null ? CodeAnalyser.CONFIG_FILE : Config.getProperty("Settings.configFile");
         Config.getInstance().store(filename);
+        dispose();
     }//GEN-LAST:event_saveButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
