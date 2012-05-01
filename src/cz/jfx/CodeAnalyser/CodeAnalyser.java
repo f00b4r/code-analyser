@@ -24,7 +24,6 @@ public class CodeAnalyser {
             @Override
             public void run() {
                 try {
-                    //new org.pushingpixels.substance.api.skin.RavenSkin()
                     javax.swing.UIManager.setLookAndFeel(new SubstanceModerateLookAndFeel());
                 } catch (UnsupportedLookAndFeelException ex) {
                 }
