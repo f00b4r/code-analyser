@@ -20,7 +20,6 @@ public class CodeAnalyser {
 
         // Load custom/defaul settings
         if ((new File(CONFIG_FILE)).exists()) {
-            System.out.println("x");
             Config.getInstance().load(CONFIG_FILE);
         } else {
             Config.getInstance().startup();
