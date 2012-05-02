@@ -14,7 +14,7 @@ public class Finalizer extends Thread {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                AnalyserController.logger.fine("Finalizer intterupted!");
+                AnalyserController.logger.info("Finalizer intterupted!");
             }
         }
         AnalyserController.logger.exiting("Finalizer", "run");

@@ -1,6 +1,7 @@
 package cz.jfx.CodeAnalyser.TaskManager;
 
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
+import cz.jfx.CodeAnalyser.TaskManager.Runners.Loader;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Runner;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -32,7 +33,7 @@ public class TaskManager {
         finalizer.start();
 
         // spusteni nacitacich vlaken
-        AnalyserController.logger.fine("Run threads");
+        AnalyserController.logger.info("Run threads");
         run();
 
         try {
@@ -48,6 +49,7 @@ public class TaskManager {
     public synchronized void closeJob(Class t) {
         for (Runner job : jobs) {
             if (job.getClass() == t) {
+                AnalyserController.logger.log(Level.FINE, "intterupting {0}", job.getName());
                 job.interrupt();
             }
         }
@@ -69,7 +71,7 @@ public class TaskManager {
             if (job.getClass() == t && job.getStatus() == Runner.WAITING) {
                 // invoke only one waiting job..
                 synchronized (job) {
-                    AnalyserController.logger.log(Level.FINER, "{0} - notify", job.getName());
+                    AnalyserController.logger.log(Level.FINE, "{0} - notify", job.getName());
                     job.setRunning(true);
                     job.notify();
                 }
@@ -87,15 +89,22 @@ public class TaskManager {
     public synchronized void complete() {
         for (Runner job : jobs) {
             if (job.isRunning()) {
+                AnalyserController.logger.log(Level.FINE, "Still running - {0}", job.getName());
                 // Any job, still running
                 return;
             }
         }
+
+        finalizer.interrupt();
+    }
+
+    public void complete(Class t) {
+        closeJob(t);
         finalizer.interrupt();
     }
 
     private void clean() {
-        AnalyserController.logger.finer("Clean TaskManager");
+        AnalyserController.logger.fine("Clean TaskManager");
         jobs = new ArrayList<>();
         finalizer = new Finalizer();
     }

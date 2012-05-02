@@ -25,6 +25,7 @@ public class Loader extends Runner {
     }
 
     public void run() {
+        running = true;
         while (running) {
             AnalyserController.logger.log(Level.FINEST, "{0} - starts", Thread.currentThread().getName());
             setStatus(Runner.RUNNING);
@@ -77,10 +78,10 @@ public class Loader extends Runner {
             if (f.canRead()) {
                 if (f.isFile()) {
                     controller.addFile(f);
-                    AnalyserController.logger.log(Level.INFO, "{0} - file ({1})", new Object[]{Thread.currentThread().getName(), f.getAbsolutePath()});
+                    AnalyserController.logger.log(Level.FINER, "{0} - file ({1})", new Object[]{Thread.currentThread().getName(), f.getAbsolutePath()});
                 } else if (f.isDirectory()) {
                     controller.addFolder(f);
-                    AnalyserController.logger.log(Level.INFO, "{0} - folder ({1})", new Object[]{Thread.currentThread().getName(), f.getAbsolutePath()});
+                    AnalyserController.logger.log(Level.FINER, "{0} - folder ({1})", new Object[]{Thread.currentThread().getName(), f.getAbsolutePath()});
                 }
             }
         }

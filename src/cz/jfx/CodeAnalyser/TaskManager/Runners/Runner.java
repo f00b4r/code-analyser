@@ -14,7 +14,7 @@ public class Runner extends Thread {
     public static final int OFF = -1;
     protected TaskManager tm;
     protected int status;
-    protected boolean running = true;
+    protected boolean running = false;
     protected FileFilter filter;
 
     public FileFilter getFilter() {
