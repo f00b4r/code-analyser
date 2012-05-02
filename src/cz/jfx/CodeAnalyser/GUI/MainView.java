@@ -298,7 +298,6 @@ public class MainView extends javax.swing.JFrame {
         Thread t = new Thread() {
 
             public void run() {
-                scannButton.setEnabled(false);
                 showLoading();
                 AnalyserController.getInstance().analyse();
                 hideLoading();
