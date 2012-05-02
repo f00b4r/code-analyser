@@ -62,6 +62,7 @@ public class FiltersView extends javax.swing.JFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/add.png"))); // NOI18N
         jButton1.setToolTipText("Add extension to list");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setPreferredSize(new java.awt.Dimension(53, 21));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
@@ -74,6 +75,7 @@ public class FiltersView extends javax.swing.JFrame {
 
         removeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/delete.png"))); // NOI18N
         removeButton.setToolTipText("Remove extension from list");
+        removeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         removeButton.setPreferredSize(new java.awt.Dimension(53, 21));
 
         extensionInput.setText("jFormattedTextField1");
@@ -81,6 +83,7 @@ public class FiltersView extends javax.swing.JFrame {
 
         newListButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/add.png"))); // NOI18N
         newListButton.setText("NEW LIST");
+        newListButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

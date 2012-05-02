@@ -117,6 +117,9 @@
           <Image iconType="3" name="/cz/jfx/CodeAnalyser/Resources/add.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Add extension to list"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Hand Cursor"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[53, 21]"/>
         </Property>
@@ -156,6 +159,9 @@
           <Image iconType="3" name="/cz/jfx/CodeAnalyser/Resources/delete.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Remove extension from list"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Hand Cursor"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[53, 21]"/>
         </Property>
@@ -175,6 +181,9 @@
           <Image iconType="3" name="/cz/jfx/CodeAnalyser/Resources/add.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="NEW LIST"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Hand Cursor"/>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>
