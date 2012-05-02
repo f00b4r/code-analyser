@@ -8,12 +8,10 @@ import cz.jfx.CodeAnalyser.Storage.IStorage;
 import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.EventListener;
-import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import javax.swing.event.EventListenerList;
 
 /**
@@ -21,7 +19,7 @@ import javax.swing.event.EventListenerList;
  * @author Felix
  */
 public class AnalyserController {
-    
+
     private TaskManager taskManager = new TaskManager();
     private LoaderController loaderController;
     private ReaderController readerController;
@@ -43,20 +41,10 @@ public class AnalyserController {
      * idea of singleton a.k.a MainController
      */
     private AnalyserController() {
-        try {
-            // Init Logger handle 
-            // and standalone logger
-            FileHandler fileHandler = new FileHandler("analyser.log");
-            fileHandler.setFormatter(new SimpleFormatter());
-            logger.setLevel(Level.ALL);
-            logger.addHandler(fileHandler);
-        } catch (IOException | SecurityException ex) {
-        }
-
         // Set up 
         loaderController = new LoaderController(this);
         readerController = new ReaderController(this);
-        
+
         logger.finer("AnalyserController started");
     }
 
@@ -144,7 +132,7 @@ public class AnalyserController {
      * InstanceHolder
      */
     private static class AnalyserControllerHolder {
-        
+
         private static final AnalyserController INSTANCE = new AnalyserController();
     }
 
@@ -186,7 +174,7 @@ public class AnalyserController {
      */
     public void analyse() {
         logger.entering("AnalyserController", "analyse");
-        
+
         cleanStorages();
         File f = view.getSelectedFolder();
         if (f.exists() && f.isDirectory() && f.canRead()) {
@@ -194,10 +182,10 @@ public class AnalyserController {
             loaderController.init();
             taskManager.start();
         } else {
-            logger.log(Level.SEVERE, f.getAbsolutePath() + " doesnt exists, or isnt folder or cant read");
+            logger.log(Level.SEVERE, "{0} doesnt exists, or isnt folder or cant read", f.getAbsolutePath());
         }
-        
+
         logger.exiting("AnalyserController", "analyse");
-        
+
     }
 }

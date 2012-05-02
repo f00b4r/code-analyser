@@ -105,9 +105,8 @@ public class LoaderController {
         if (isFolderStorageEmpty()) {
             // Check active threads
             if (!context.getTaskManager().isJobsActive(Loader.class)) {
-                // Kill 
-                context.getTaskManager().closeJob(Loader.class);
-                context.getTaskManager().complete();
+                // Kill loaders and indicate loading complete
+                context.getTaskManager().complete(Loader.class);
             }
         }
     }
