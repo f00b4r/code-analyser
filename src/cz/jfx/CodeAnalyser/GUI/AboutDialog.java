@@ -66,7 +66,7 @@ public class AboutDialog extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(emailLabel))
                             .addComponent(versionLabel))))
-                .addGap(148, 148, 148))
+                .addGap(127, 127, 127))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,11 +82,13 @@ public class AboutDialog extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(vendorLabel)
                     .addComponent(emailLabel))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
+        pack();
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-317)/2, (screenSize.height-156)/2, 317, 156);
+        java.awt.Dimension dialogSize = getSize();
+        setLocation((screenSize.width-dialogSize.width)/2,(screenSize.height-dialogSize.height)/2);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel emailLabel;
