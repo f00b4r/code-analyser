@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 /**
  *
@@ -68,6 +69,7 @@ public class Config {
                 // if yes, load custom settings
                 properties.load(new FileInputStream(filename));
             }
+
         } catch (IOException e) {
             AnalyserController.logger.log(Level.CONFIG, "Load fail: {0}", e.getMessage());
         }
@@ -77,6 +79,14 @@ public class Config {
      * Process when application starts
      */
     public void startup() {
+        try {
+            // Sets logging file
+            LogManager.getLogManager().readConfiguration(Config.class.getResourceAsStream("/cz/jfx/CodeAnalyser/Config/logging.properties"));
+        } catch (IOException | SecurityException e) {
+            System.out.println(e.getMessage());
+            AnalyserController.logger.log(Level.CONFIG, "Reading logging file error: {0}", e.getMessage());
+        }
+
         loadDefaults(defaults);
     }
 

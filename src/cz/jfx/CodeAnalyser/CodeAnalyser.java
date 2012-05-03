@@ -3,14 +3,14 @@ package cz.jfx.CodeAnalyser;
 import cz.jfx.CodeAnalyser.Config.Config;
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import cz.jfx.CodeAnalyser.GUI.MainView;
+import cz.jfx.CodeAnalyser.Utils.FilePath;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.skin.BusinessBlackSteelSkin;
 import org.pushingpixels.substance.api.skin.SubstanceBusinessBlackSteelLookAndFeel;
-import org.pushingpixels.substance.api.skin.SubstanceModerateLookAndFeel;
 
 /**
  *
