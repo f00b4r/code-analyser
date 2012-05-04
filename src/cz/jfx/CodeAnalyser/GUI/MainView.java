@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /**
@@ -15,6 +16,7 @@ import javax.swing.JFileChooser;
  */
 public class MainView extends javax.swing.JFrame {
 
+    private static final Logger logger = Logger.getLogger(MainView.class.getName());
     private File selectedFolder;
 
     public File getSelectedFolder() {
@@ -56,13 +58,9 @@ public class MainView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jProgressBar1 = new javax.swing.JProgressBar();
         scanFolder = new javax.swing.JTextField();
         selectFolder = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        infoPanel = new javax.swing.JPanel();
-        infoToolbar = new javax.swing.JToolBar();
-        loadingBar = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         dataTable = new javax.swing.JTable();
@@ -75,7 +73,7 @@ public class MainView extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JToolBar.Separator();
         aboutButton = new javax.swing.JButton();
         exitButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        preloader = new org.jdesktop.swingx.JXBusyLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CodeAnalyser");
@@ -92,29 +90,6 @@ public class MainView extends javax.swing.JFrame {
         });
 
         jLabel1.setText("Scanned path");
-
-        infoPanel.setAlignmentY(2.0F);
-        infoPanel.setMinimumSize(new java.awt.Dimension(100, 20));
-
-        infoToolbar.setBorder(null);
-        infoToolbar.setFloatable(false);
-        infoToolbar.setRollover(true);
-
-        loadingBar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/preloader3.gif"))); // NOI18N
-        loadingBar.setToolTipText("Loading..");
-        loadingBar.setDoubleBuffered(true);
-        infoToolbar.add(loadingBar);
-
-        javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
-        infoPanel.setLayout(infoPanelLayout);
-        infoPanelLayout.setHorizontalGroup(
-            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(infoToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-        );
-        infoPanelLayout.setVerticalGroup(
-            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(infoToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
 
         dataTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -236,37 +211,28 @@ public class MainView extends javax.swing.JFrame {
         });
         menuToolbar.add(exitButton);
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        preloader.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menuToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(menuToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 800, 800)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 372, 800)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(scanFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                        .addComponent(scanFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 337, 800)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(selectFolder, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 372, 800))
                 .addGap(10, 10, 10))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(327, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(352, Short.MAX_VALUE)
+                .addComponent(preloader, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,18 +246,14 @@ public class MainView extends javax.swing.JFrame {
                     .addComponent(selectFolder))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(preloader, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        pack();
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        java.awt.Dimension dialogSize = getSize();
-        setLocation((screenSize.width-dialogSize.width)/2,(screenSize.height-dialogSize.height)/2);
+        setBounds((screenSize.width-408)/2, (screenSize.height-407)/2, 408, 407);
     }// </editor-fold>//GEN-END:initComponents
 
     private void selectFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFolderActionPerformed
@@ -348,24 +310,19 @@ public class MainView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_graphButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        DetailView view = new DetailView();
-        view.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     public void showLoading() {
-        loadingBar.setVisible(true);
+        preloader.setBusy(true);
     }
 
     public void hideLoading() {
-        loadingBar.setVisible(false);
+        preloader.setBusy(false);
     }
 
     public void storeSettings() {
-        AnalyserController.logger.entering("MainView", "storeSettings");
+        logger.entering("MainView", "storeSettings");
         String filename = Config.getProperty("Settings.configFile") == null ? CodeAnalyser.CONFIG_FILE : Config.getProperty("Settings.configFile");
         Config.getInstance().store(filename);
-        AnalyserController.logger.exiting("MainView", "storeSettings");
+        logger.exiting("MainView", "storeSettings");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aboutButton;
@@ -373,17 +330,13 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton exitButton;
     private javax.swing.JButton filtersButton;
     private javax.swing.JButton graphButton;
-    private javax.swing.JPanel infoPanel;
-    private javax.swing.JToolBar infoToolbar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
-    private javax.swing.JLabel loadingBar;
     private javax.swing.JToolBar menuToolbar;
+    private org.jdesktop.swingx.JXBusyLabel preloader;
     private javax.swing.JTextField scanFolder;
     private javax.swing.JButton scannButton;
     private javax.swing.JButton selectFolder;

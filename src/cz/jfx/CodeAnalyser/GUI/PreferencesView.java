@@ -2,10 +2,10 @@ package cz.jfx.CodeAnalyser.GUI;
 
 import cz.jfx.CodeAnalyser.CodeAnalyser;
 import cz.jfx.CodeAnalyser.Config.Config;
-import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /**
@@ -15,6 +15,7 @@ import javax.swing.JFileChooser;
 public class PreferencesView extends javax.swing.JFrame {
 
     private MainView parent;
+    private static final Logger logger = Logger.getLogger(PreferencesView.class.getName());
 
     /** Creates new form PreferencesView */
     public PreferencesView(MainView mainView) {
@@ -212,7 +213,7 @@ public class PreferencesView extends javax.swing.JFrame {
                     Config.saveProperty("Settings.configFile", file.getAbsolutePath());
                     settingsPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 } catch (IOException ex) {
-                    AnalyserController.logger.log(Level.WARNING, "Error with creating new config file: {0}", ex.getMessage());
+                    logger.log(Level.WARNING, "Error with creating new config file: {0}", ex.getMessage());
                 }
             }
         }

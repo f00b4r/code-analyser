@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * FiltersView.java
- *
- * Created on 30.4.2012, 19:34:59
- */
 package cz.jfx.CodeAnalyser.GUI;
 
 /**
@@ -24,7 +14,7 @@ public class FiltersView extends javax.swing.JFrame {
         initMyComponents();
         initComponents();
     }
-    
+
     private void initMyComponents() {
         setIconImage(parent.getIconImage());
     }
@@ -167,7 +157,6 @@ public class FiltersView extends javax.swing.JFrame {
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_removeButtonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox configuredList;
     private javax.swing.JFormattedTextField extensionInput;
