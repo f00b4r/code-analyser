@@ -1,6 +1,5 @@
 package cz.jfx.CodeAnalyser.Config;
 
-import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,7 +8,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,6 +20,7 @@ public class Config {
     private ResourceBundle application = ResourceBundle.getBundle("cz/jfx/CodeAnalyser/Config/application");
     private ResourceBundle defaults = ResourceBundle.getBundle("cz/jfx/CodeAnalyser/Config/defaults");
     private Properties properties = new Properties();
+    private static final Logger logger = Logger.getLogger(Config.class.getName());
 
     /**
      * Gets a application config value
@@ -31,7 +31,7 @@ public class Config {
         if (instance.application.containsKey(key)) {
             return instance.application.getString(key);
         }
-        AnalyserController.logger.log(Level.CONFIG, "Key {0} not found in bundle", key);
+        logger.log(Level.CONFIG, "Key {0} not found in bundle", key);
         return null;
     }
 
@@ -44,7 +44,7 @@ public class Config {
         if (instance.properties.containsKey(key)) {
             return instance.properties.getProperty(key);
         }
-        AnalyserController.logger.log(Level.CONFIG, "Key {0} not found in properties", key);
+        logger.log(Level.CONFIG, "Key {0} not found in properties", key);
         return null;
     }
 
@@ -71,7 +71,7 @@ public class Config {
             }
 
         } catch (IOException e) {
-            AnalyserController.logger.log(Level.CONFIG, "Load fail: {0}", e.getMessage());
+            logger.log(Level.CONFIG, "Load fail: {0}", e.getMessage());
         }
     }
 
@@ -79,14 +79,6 @@ public class Config {
      * Process when application starts
      */
     public void startup() {
-        try {
-            // Sets logging file
-            LogManager.getLogManager().readConfiguration(Config.class.getResourceAsStream("/cz/jfx/CodeAnalyser/Config/logging.properties"));
-        } catch (IOException | SecurityException e) {
-            System.out.println(e.getMessage());
-            AnalyserController.logger.log(Level.CONFIG, "Reading logging file error: {0}", e.getMessage());
-        }
-
         loadDefaults(defaults);
     }
 
@@ -96,9 +88,11 @@ public class Config {
      */
     public void store(String filename) {
         try {
-            properties.store(new FileOutputStream(filename), "CodeAnalyse: settings");
+            FileOutputStream f = new FileOutputStream(filename);
+            properties.store(f, "CodeAnalyse: settings");
+            f.close();
         } catch (IOException e) {
-            AnalyserController.logger.log(Level.CONFIG, "Store fail: {0}", e.getMessage());
+            logger.log(Level.CONFIG, "Store fail: {0}", e.getMessage());
         }
     }
 

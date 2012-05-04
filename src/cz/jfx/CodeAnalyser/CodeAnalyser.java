@@ -3,10 +3,8 @@ package cz.jfx.CodeAnalyser;
 import cz.jfx.CodeAnalyser.Config.Config;
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import cz.jfx.CodeAnalyser.GUI.MainView;
-import cz.jfx.CodeAnalyser.Utils.FilePath;
+import cz.jfx.CodeAnalyser.Utils.LoggerSupport;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -21,7 +19,9 @@ public class CodeAnalyser {
     public static final String CONFIG_FILE = "./default.config";
 
     public static void main(String[] args) {
-        CodeAnalyser ca = new CodeAnalyser();
+
+        // Load logger
+        LoggerSupport.init();
 
         // Load custom/defaul settings
         if ((new File(CONFIG_FILE)).exists()) {
@@ -31,6 +31,7 @@ public class CodeAnalyser {
         }
 
         // start GUI & main controller
+        CodeAnalyser ca = new CodeAnalyser();
         ca.start();
     }
 

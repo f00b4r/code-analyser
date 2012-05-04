@@ -1,6 +1,6 @@
 package cz.jfx.CodeAnalyser.TaskManager;
 
-import cz.jfx.CodeAnalyser.Control.AnalyserController;
+import java.util.logging.Logger;
 
 /**
  *
@@ -8,15 +8,17 @@ import cz.jfx.CodeAnalyser.Control.AnalyserController;
  */
 public class Finalizer extends Thread {
 
+    private static final Logger logger = Logger.getLogger(Finalizer.class.getName());
+
     public void run() {
-        AnalyserController.logger.entering("Finalizer", "run");
+        logger.entering("Finalizer", "run");
         synchronized (this) {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                AnalyserController.logger.info("Finalizer intterupted!");
+                logger.info("Finalizer intterupted!");
             }
         }
-        AnalyserController.logger.exiting("Finalizer", "run");
+        logger.exiting("Finalizer", "run");
     }
 }

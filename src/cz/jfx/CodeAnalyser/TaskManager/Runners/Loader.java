@@ -5,6 +5,7 @@ import cz.jfx.CodeAnalyser.Control.LoaderController;
 import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -12,6 +13,7 @@ import java.util.logging.Level;
  */
 public class Loader extends Runner {
 
+    private static final Logger logger = Logger.getLogger(Loader.class.getName());
     private LoaderController controller;
 
     public Loader(TaskManager tm, LoaderController controller) {
@@ -27,7 +29,7 @@ public class Loader extends Runner {
     public void run() {
         running = true;
         while (running) {
-            AnalyserController.logger.log(Level.FINEST, "{0} - starts", Thread.currentThread().getName());
+            logger.log(Level.FINEST, "{0} - starts", Thread.currentThread().getName());
             setStatus(Runner.RUNNING);
 
             // Checking, if storage is empty..
@@ -37,11 +39,11 @@ public class Loader extends Runner {
                     try {
                         setStatus(Runner.WAITING);
                         controller.checkLoadingProcess();
-                        AnalyserController.logger.log(Level.FINEST, "{0} - waiting", Thread.currentThread().getName());
+                        logger.log(Level.FINEST, "{0} - waiting", Thread.currentThread().getName());
                         wait();
                         continue;
                     } catch (InterruptedException ex) {
-                        AnalyserController.logger.log(Level.FINEST, "{0} - was intterupted", Thread.currentThread().getName());
+                        logger.log(Level.FINEST, "{0} - was intterupted", Thread.currentThread().getName());
                         setRunning(false);
                         setStatus(Runner.OFF);
                         break;
@@ -53,7 +55,7 @@ public class Loader extends Runner {
             search(controller.nextFolder());
 
             // Yielding..
-            AnalyserController.logger.log(Level.FINEST, "{0} - yield", Thread.currentThread().getName());
+            logger.log(Level.FINEST, "{0} - yield", Thread.currentThread().getName());
             yield();
         }
     }
@@ -78,10 +80,10 @@ public class Loader extends Runner {
             if (f.canRead()) {
                 if (f.isFile()) {
                     controller.addFile(f);
-                    AnalyserController.logger.log(Level.FINER, "{0} - file ({1})", new Object[]{Thread.currentThread().getName(), f.getAbsolutePath()});
+                    logger.log(Level.FINER, "{0} - file ({1})", new Object[]{Thread.currentThread().getName(), f.getAbsolutePath()});
                 } else if (f.isDirectory()) {
                     controller.addFolder(f);
-                    AnalyserController.logger.log(Level.FINER, "{0} - folder ({1})", new Object[]{Thread.currentThread().getName(), f.getAbsolutePath()});
+                    logger.log(Level.FINER, "{0} - folder ({1})", new Object[]{Thread.currentThread().getName(), f.getAbsolutePath()});
                 }
             }
         }

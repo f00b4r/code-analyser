@@ -9,7 +9,6 @@ import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.EventListener;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.EventListenerList;
@@ -31,10 +30,7 @@ public class AnalyserController {
      * Storage of Analyse listeners
      */
     public EventListenerList listeners = new EventListenerList();
-    /**
-     * Logging utils
-     */
-    public static final Logger logger = Logger.getLogger("CodeAnalyser");
+    private static final Logger logger = Logger.getLogger(AnalyserController.class.getName());
 
     /**
      * Private constructor,

@@ -1,10 +1,10 @@
 package cz.jfx.CodeAnalyser.TaskManager;
 
 import cz.jfx.CodeAnalyser.Control.AnalyserController;
-import cz.jfx.CodeAnalyser.TaskManager.Runners.Loader;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Runner;
 import java.util.ArrayList;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,6 +15,7 @@ public class TaskManager {
     private ArrayList<Runner> jobs;
     private Finalizer finalizer;
     private AnalyserController controller;
+    private static final Logger logger = Logger.getLogger(TaskManager.class.getName());
 
     public TaskManager() {
         clean();
@@ -28,28 +29,28 @@ public class TaskManager {
      * TaskManager function
      */
     public void start() {
-        AnalyserController.logger.entering("TaskManager", "start");
+        logger.entering("TaskManager", "start");
 
         finalizer.start();
 
         // spusteni nacitacich vlaken
-        AnalyserController.logger.info("Run threads");
+        logger.info("Run threads");
         run();
 
         try {
             finalizer.join();
         } catch (InterruptedException ex) {
-            AnalyserController.logger.warning("TaskManager intterupted");
+            logger.warning("TaskManager intterupted");
         }
 
         clean();
-        AnalyserController.logger.exiting("TaskManager", "start");
+        logger.exiting("TaskManager", "start");
     }
 
     public synchronized void closeJob(Class t) {
         for (Runner job : jobs) {
             if (job.getClass() == t) {
-                AnalyserController.logger.log(Level.FINE, "intterupting {0}", job.getName());
+                logger.log(Level.FINE, "intterupting {0}", job.getName());
                 job.interrupt();
             }
         }
@@ -66,12 +67,12 @@ public class TaskManager {
     }
 
     public void invokeJob(Class t) {
-        AnalyserController.logger.fine("Job invoking");
+        logger.fine("Job invoking");
         for (Runner job : jobs) {
             if (job.getClass() == t && job.getStatus() == Runner.WAITING) {
                 // invoke only one waiting job..
                 synchronized (job) {
-                    AnalyserController.logger.log(Level.FINE, "{0} - notify", job.getName());
+                    logger.log(Level.FINE, "{0} - notify", job.getName());
                     job.setRunning(true);
                     job.notify();
                 }
@@ -89,7 +90,7 @@ public class TaskManager {
     public synchronized void complete() {
         for (Runner job : jobs) {
             if (job.isRunning()) {
-                AnalyserController.logger.log(Level.FINE, "Still running - {0}", job.getName());
+                logger.log(Level.FINE, "Still running - {0}", job.getName());
                 // Any job, still running
                 return;
             }
@@ -104,7 +105,7 @@ public class TaskManager {
     }
 
     private void clean() {
-        AnalyserController.logger.fine("Clean TaskManager");
+        logger.fine("Clean TaskManager");
         jobs = new ArrayList<>();
         finalizer = new Finalizer();
     }

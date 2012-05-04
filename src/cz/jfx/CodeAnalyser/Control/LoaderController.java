@@ -7,6 +7,7 @@ import cz.jfx.CodeAnalyser.TaskManager.Listeners.JobListener;
 import cz.jfx.CodeAnalyser.TaskManager.Runners.Loader;
 import java.io.File;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,7 +16,8 @@ import java.util.logging.Level;
 public class LoaderController {
 
     private AnalyserController context;
-
+    private static final Logger logger = Logger.getLogger(LoaderController.class.getName());
+    
     LoaderController(AnalyserController context) {
         this.context = context;
     }
@@ -33,7 +35,7 @@ public class LoaderController {
         String countLoaders = (Config.getProperty("Threads.loaders") == null ? "1" : Config.getProperty("Threads.loaders"));
         // Add many threads as is possibles
         for (int i = 1; i <= Integer.parseInt(countLoaders); i++) {
-            AnalyserController.logger.log(Level.FINE, "Added loader{0}", i);
+            logger.log(Level.FINE, "Added loader{0}", i);
             context.getTaskManager().addJob(new Loader("Loader" + i, context.getTaskManager(), this));
         }
     }
