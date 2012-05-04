@@ -22,6 +22,7 @@ public class AnalyserController {
     private TaskManager taskManager = new TaskManager();
     private LoaderController loaderController;
     private ReaderController readerController;
+    private FilterController filterController;
     private IStorage<File> fileStorage = new FileStorage<>();
     private IStorage<File> folderStorage = new FolderStorage<>();
     private FileFilter codeFilter = new CodeFilter();
@@ -40,6 +41,7 @@ public class AnalyserController {
         // Set up 
         loaderController = new LoaderController(this);
         readerController = new ReaderController(this);
+        filterController = new FilterController(this);
 
         logger.finer("AnalyserController started");
     }

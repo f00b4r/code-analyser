@@ -1,6 +1,5 @@
 package cz.jfx.CodeAnalyser.TaskManager.Runners;
 
-import cz.jfx.CodeAnalyser.Control.AnalyserController;
 import cz.jfx.CodeAnalyser.Control.LoaderController;
 import cz.jfx.CodeAnalyser.TaskManager.TaskManager;
 import java.io.File;
