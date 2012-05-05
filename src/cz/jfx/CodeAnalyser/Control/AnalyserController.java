@@ -160,6 +160,13 @@ public class AnalyserController {
     }
 
     /**
+     * Return the FilterController
+     */
+    public FilterController getFilterController() {
+        return filterController;
+    }
+
+    /**
      * Clean up storages
      */
     private void cleanStorages() {

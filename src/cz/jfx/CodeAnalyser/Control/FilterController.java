@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 /**
  *
@@ -20,28 +21,8 @@ public class FilterController {
     private FilterImpl filterLists = new FilterImpl();
     private AnalyserController context;
     
-    public FilterController() {
-    }
-    
     public FilterController(AnalyserController context) {
         this.context = context;
-        
-        FilterList fl1 = new FilterList("xx");
-        Filter f1 = new Filter("java");
-        Filter f2 = new Filter("php");
-        fl1.addFilter(f1);
-        fl1.addFilter(f2);
-        
-        FilterList fl2 = new FilterList("cc");
-        Filter f3 = new Filter("html");
-        Filter f4 = new Filter("css");
-        fl2.addFilter(f3);
-        fl2.addFilter(f4);
-        
-        filterLists.add(fl1);
-        filterLists.add(fl2);
-        
-        saveFilters();
     }
     
     public final void saveFilters() {
@@ -51,7 +32,28 @@ public class FilterController {
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(filterLists, new File("./list.xml"));
         } catch (JAXBException ex) {
-            logger.log(Level.WARNING, "Error JAXB marshal filter list: {0}", ex.getMessage());
+            logger.log(Level.WARNING, "Save JAXB filter list error: {0}", ex.getMessage());
         }
+    }
+    
+    public final void loadFilters() {
+        try {
+            JAXBContext jaxb = JAXBContext.newInstance(FilterImpl.class);
+            Unmarshaller m = jaxb.createUnmarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            filterLists = (FilterImpl) m.unmarshal(new File("./list.xml"));
+        } catch (JAXBException ex) {
+            logger.log(Level.WARNING, "Load JAXB filter list error: {0}", ex.getMessage());
+        }
+    }
+    
+    public FilterImpl getFilterLists() {
+        return filterLists;
+    }
+    
+    public FilterList createList(String name) {
+        FilterList fl = new FilterList(name);
+        filterLists.add(fl);
+        return fl;
     }
 }
