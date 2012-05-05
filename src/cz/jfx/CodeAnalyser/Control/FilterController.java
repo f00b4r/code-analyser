@@ -1,5 +1,6 @@
 package cz.jfx.CodeAnalyser.Control;
 
+import cz.jfx.CodeAnalyser.Config.Config;
 import cz.jfx.CodeAnalyser.Filters.Filter;
 import cz.jfx.CodeAnalyser.Filters.FilterImpl;
 import cz.jfx.CodeAnalyser.Filters.FilterList;
@@ -23,6 +24,7 @@ public class FilterController {
     
     public FilterController(AnalyserController context) {
         this.context = context;
+        loadFilters();
     }
     
     public final void saveFilters() {
@@ -30,7 +32,7 @@ public class FilterController {
             JAXBContext jaxb = JAXBContext.newInstance(FilterImpl.class);
             Marshaller m = jaxb.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            m.marshal(filterLists, new File("./list.xml"));
+            m.marshal(filterLists, new File(Config.getProperty("Settings.filters.file", "./filters.xml")));
         } catch (JAXBException ex) {
             logger.log(Level.WARNING, "Save JAXB filter list error: {0}", ex.getMessage());
         }
@@ -40,9 +42,9 @@ public class FilterController {
         try {
             JAXBContext jaxb = JAXBContext.newInstance(FilterImpl.class);
             Unmarshaller m = jaxb.createUnmarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            filterLists = (FilterImpl) m.unmarshal(new File("./list.xml"));
+            filterLists = (FilterImpl) m.unmarshal(new File(Config.getProperty("Settings.filters.file", "./filters.xml")));
         } catch (JAXBException ex) {
+            ex.printStackTrace();
             logger.log(Level.WARNING, "Load JAXB filter list error: {0}", ex.getMessage());
         }
     }
