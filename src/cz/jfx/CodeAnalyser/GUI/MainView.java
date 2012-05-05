@@ -297,13 +297,17 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
-        PreferencesView view = new PreferencesView(this);
-        view.setVisible(true);
+        if (preferencesView == null) {
+            preferencesView = new PreferencesView(this);
+        }
+        preferencesView.setVisible(true);
     }//GEN-LAST:event_settingsButtonActionPerformed
 
     private void filtersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersButtonActionPerformed
-        FiltersView view = new FiltersView(this);
-        view.setVisible(true);
+        if (filtersView == null) {
+            filtersView = new FiltersView(this);
+        }
+        filtersView.setVisible(true);
     }//GEN-LAST:event_filtersButtonActionPerformed
 
     private void graphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphButtonActionPerformed
@@ -320,7 +324,7 @@ public class MainView extends javax.swing.JFrame {
 
     public void storeSettings() {
         logger.entering("MainView", "storeSettings");
-        String filename = Config.getProperty("Settings.configFile") == null ? CodeAnalyser.CONFIG_FILE : Config.getProperty("Settings.configFile");
+        String filename = Config.getProperty("Settings.config.file", CodeAnalyser.CONFIG_FILE);
         Config.getInstance().store(filename);
         logger.exiting("MainView", "storeSettings");
     }
@@ -342,4 +346,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton selectFolder;
     private javax.swing.JButton settingsButton;
     // End of variables declaration//GEN-END:variables
+    private PreferencesView preferencesView;
+    private FiltersView filtersView;
+    private DetailView detailView;
 }

@@ -2,11 +2,14 @@ package cz.jfx.CodeAnalyser.GUI;
 
 import cz.jfx.CodeAnalyser.CodeAnalyser;
 import cz.jfx.CodeAnalyser.Config.Config;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -30,7 +33,29 @@ public class PreferencesView extends javax.swing.JFrame {
     }
 
     private void initAfterComponents() {
-        loadSettings();
+        Config.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                String property = evt.getPropertyName();
+                if (property.equals("Threads.readers")) {
+                    readersSpinner.setValue(Integer.parseInt((String) evt.getNewValue()));
+                }
+                if (property.equals("Threads.loaders")) {
+                    loadersSpinner.setValue(Integer.parseInt((String) evt.getNewValue()));
+                }
+                if (property.equals("Settings.config.file")) {
+                    settingsPath.setText((String) evt.getNewValue());
+                }
+                if (property.equals("Settings.analyse.file")) {
+                    analysePath.setText((String) evt.getNewValue());
+                }
+                if (property.equals("Settings.filters.file")) {
+                    filtersPath.setText((String) evt.getNewValue());
+                }
+            }
+        });
+        Config.getInstance().reload();
     }
 
     /** This method is called from within the constructor to
@@ -109,7 +134,7 @@ public class PreferencesView extends javax.swing.JFrame {
         settingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Config file"));
 
         settingsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/refresh2.png"))); // NOI18N
-        settingsButton.setText("Load");
+        settingsButton.setText("Open");
         settingsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         settingsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,7 +175,7 @@ public class PreferencesView extends javax.swing.JFrame {
         analysePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Analyse file"));
 
         analyseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/refresh2.png"))); // NOI18N
-        analyseButton.setText("Load");
+        analyseButton.setText("Open");
         analyseButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         analyseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,7 +207,7 @@ public class PreferencesView extends javax.swing.JFrame {
         filtersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filters file"));
 
         filtersButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/refresh2.png"))); // NOI18N
-        filtersButton.setText("Load");
+        filtersButton.setText("Open");
         filtersButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         filtersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -273,20 +298,21 @@ public class PreferencesView extends javax.swing.JFrame {
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Config only", "config"));
         fileChooser.setCurrentDirectory(new java.io.File("."));
-        int val = fileChooser.showDialog(this, "Open & Save");
+        int val = fileChooser.showDialog(this, "Load or save");
 
         if (val == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             if (file.exists()) {
                 Config.getInstance().load(file.getAbsolutePath());
-                Config.saveProperty("Settings.configFile", file.getAbsolutePath());
+                Config.saveProperty("Settings.config.file", file.getAbsolutePath());
                 settingsPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                loadSettings();
+                Config.getInstance().reload();
             } else {
                 try {
                     file.createNewFile();
-                    Config.saveProperty("Settings.configFile", file.getAbsolutePath());
+                    Config.saveProperty("Settings.config.file", file.getAbsolutePath());
                     settingsPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 } catch (IOException ex) {
                     logger.log(Level.WARNING, "Error with creating new config file: {0}", ex.getMessage());
@@ -295,18 +321,6 @@ public class PreferencesView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_settingsButtonActionPerformed
 
-    private void loadSettings() {
-        String loaders = Config.getProperty("Threads.loaders");
-        if (loaders != null) {
-            loadersSpinner.setValue(Integer.parseInt(loaders));
-        }
-
-        String readers = Config.getProperty("Threads.readers");
-        if (readers != null) {
-            readersSpinner.setValue(Integer.parseInt(readers));
-        }
-    }
-
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         String filename = Config.getProperty("Settings.configFile") == null ? CodeAnalyser.CONFIG_FILE : Config.getProperty("Settings.configFile");
         Config.getInstance().store(filename);
@@ -314,13 +328,30 @@ public class PreferencesView extends javax.swing.JFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void analyseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyseButtonActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        int val = fileChooser.showSaveDialog(this);
+
+        if (val == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            Config.getInstance().load(file.getAbsolutePath());
+            Config.saveProperty("Settings.analyse.file", file.getAbsolutePath());
+            analysePath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        }
     }//GEN-LAST:event_analyseButtonActionPerformed
 
     private void filtersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_filtersButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        int val = fileChooser.showSaveDialog(this);
 
+        if (val == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            Config.getInstance().load(file.getAbsolutePath());
+            Config.saveProperty("Settings.filters.file", file.getAbsolutePath());
+            analysePath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        }
+    }//GEN-LAST:event_filtersButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton analyseButton;
     private javax.swing.JPanel analysePanel;
