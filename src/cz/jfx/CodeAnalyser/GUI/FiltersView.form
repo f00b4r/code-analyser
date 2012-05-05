@@ -32,9 +32,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="extensionInput" pref="253" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="addExtensionButton" min="-2" pref="28" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="removeButton" min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="removeExtensionButton" min="-2" pref="28" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" alignment="0" pref="321" max="32767" attributes="1"/>
                   <Component id="jLabel2" alignment="0" min="-2" pref="134" max="-2" attributes="0"/>
@@ -67,8 +67,8 @@
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="jButton1" alignment="2" min="-2" pref="21" max="-2" attributes="0"/>
-                  <Component id="removeButton" alignment="2" min="-2" pref="21" max="-2" attributes="1"/>
+                  <Component id="addExtensionButton" alignment="2" min="-2" pref="21" max="-2" attributes="0"/>
+                  <Component id="removeExtensionButton" alignment="2" min="-2" pref="21" max="-2" attributes="1"/>
                   <Component id="extensionInput" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -103,7 +103,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="addExtensionButton">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/cz/jfx/CodeAnalyser/Resources/add.png"/>
@@ -117,7 +117,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addExtensionButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -133,7 +133,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="12" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Configured list"/>
+        <Property name="text" type="java.lang.String" value="Filter lists"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="configuredList">
@@ -148,7 +148,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="removeButton">
+    <Component class="javax.swing.JButton" name="removeExtensionButton">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/cz/jfx/CodeAnalyser/Resources/delete.png"/>
@@ -162,7 +162,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeExtensionButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="extensionInput">

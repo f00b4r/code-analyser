@@ -6,9 +6,17 @@ package cz.jfx.CodeAnalyser.GUI;
  */
 public class DetailView extends javax.swing.JFrame {
 
+    private MainView parent;
+
     /** Creates new form DetailView */
-    public DetailView() {
+    public DetailView(MainView parent) {
+        this.parent = parent;
         initComponents();
+        initMyComponents();
+    }
+
+    private void initMyComponents() {
+        setIconImage(parent.getIconImage());
     }
 
     /** This method is called from within the constructor to

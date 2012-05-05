@@ -1,5 +1,11 @@
 package cz.jfx.CodeAnalyser.GUI;
 
+import cz.jfx.CodeAnalyser.Control.AnalyserController;
+import cz.jfx.CodeAnalyser.Control.FilterController;
+import cz.jfx.CodeAnalyser.Filters.Filter;
+import cz.jfx.CodeAnalyser.Filters.FilterList;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Felix
@@ -7,6 +13,9 @@ package cz.jfx.CodeAnalyser.GUI;
 public class FiltersView extends javax.swing.JFrame {
 
     private MainView parent;
+    private static final Logger logger = Logger.getLogger(FiltersView.class.getName());
+    private FilterController controller = AnalyserController.getInstance().getFilterController();
+    private FilterList focusedList;
 
     /** Creates new form FiltersView */
     public FiltersView(MainView mainView) {
@@ -30,11 +39,11 @@ public class FiltersView extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         extensionList = new javax.swing.JList();
-        jButton1 = new javax.swing.JButton();
+        addExtensionButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         configuredList = new javax.swing.JComboBox();
-        removeButton = new javax.swing.JButton();
+        removeExtensionButton = new javax.swing.JButton();
         extensionInput = new javax.swing.JFormattedTextField();
         newListButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -51,31 +60,31 @@ public class FiltersView extends javax.swing.JFrame {
         extensionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jScrollPane1.setViewportView(extensionList);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/add.png"))); // NOI18N
-        jButton1.setToolTipText("Add extension to list");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setPreferredSize(new java.awt.Dimension(53, 21));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addExtensionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/add.png"))); // NOI18N
+        addExtensionButton.setToolTipText("Add extension to list");
+        addExtensionButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addExtensionButton.setPreferredSize(new java.awt.Dimension(53, 21));
+        addExtensionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addExtensionButtonActionPerformed(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel2.setText("Extensions list (*.ext)");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
-        jLabel3.setText("Configured list");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setText("Filter lists");
 
         configuredList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        removeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/delete.png"))); // NOI18N
-        removeButton.setToolTipText("Remove extension from list");
-        removeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        removeButton.setPreferredSize(new java.awt.Dimension(53, 21));
-        removeButton.addActionListener(new java.awt.event.ActionListener() {
+        removeExtensionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cz/jfx/CodeAnalyser/Resources/delete.png"))); // NOI18N
+        removeExtensionButton.setToolTipText("Remove extension from list");
+        removeExtensionButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        removeExtensionButton.setPreferredSize(new java.awt.Dimension(53, 21));
+        removeExtensionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeButtonActionPerformed(evt);
+                removeExtensionButtonActionPerformed(evt);
             }
         });
 
@@ -105,9 +114,9 @@ public class FiltersView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(extensionInput, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addExtensionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(removeExtensionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
@@ -134,8 +143,8 @@ public class FiltersView extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addExtensionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeExtensionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(extensionInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -147,26 +156,28 @@ public class FiltersView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newListButtonActionPerformed
-        // TODO add your handling code here:
+        focusedList = controller.createList("custom1");
     }//GEN-LAST:event_newListButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void addExtensionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExtensionButtonActionPerformed
+        Filter f = new Filter(extensionInput.getText());
+        focusedList.addFilter(f);
+    }//GEN-LAST:event_addExtensionButtonActionPerformed
 
-    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_removeButtonActionPerformed
+    private void removeExtensionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeExtensionButtonActionPerformed
+        String extension = extensionInput.getSelectedText();
+        focusedList.removeFilter(extension);
+    }//GEN-LAST:event_removeExtensionButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addExtensionButton;
     private javax.swing.JComboBox configuredList;
     private javax.swing.JFormattedTextField extensionInput;
     private javax.swing.JList extensionList;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton newListButton;
-    private javax.swing.JButton removeButton;
+    private javax.swing.JButton removeExtensionButton;
     // End of variables declaration//GEN-END:variables
 }
