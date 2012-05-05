@@ -18,7 +18,7 @@ public class LoggerSupport {
         analyser.setLevel(Level.FINEST);
 
         try {
-            FileHandler fh = new FileHandler("./logger.log", true);
+            FileHandler fh = new FileHandler("./logger.log", false);
             fh.setLevel(Level.FINEST);
             fh.setFormatter(new SimpleFormatter());
             fh.setEncoding("UTF-8");
