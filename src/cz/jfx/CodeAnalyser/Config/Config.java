@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -17,22 +18,30 @@ import java.util.logging.Logger;
  *
  * @author Felix
  */
-public class Config {
+public class Config implements Serializable {
 
     private static final Config instance = new Config();
     private ResourceBundle application = ResourceBundle.getBundle("cz/jfx/CodeAnalyser/Config/application");
     private ResourceBundle defaults = ResourceBundle.getBundle("cz/jfx/CodeAnalyser/Config/defaults");
     private Properties properties = new Properties();
     private static final Logger logger = Logger.getLogger(Config.class.getName());
-    protected transient PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+    private transient PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     /**
-     * Adds a property change listener 
+     * Adds a property change listener width String key 
      * @param propertyName
      * @param listener 
      */
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         changeSupport.addPropertyChangeListener(propertyName, listener);
+    }
+
+    /**
+     * Adds a property change listener
+     * @param listener 
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
     }
 
     /**
@@ -51,7 +60,7 @@ public class Config {
      * @param newValue 
      */
     public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        if ((oldValue == null && newValue == null) || oldValue.equals(newValue)) {
+        if ((oldValue == null && newValue == null) || oldValue == newValue) {
             return;
         }
         changeSupport.firePropertyChange(new PropertyChangeEvent(this, propertyName, oldValue, newValue));
@@ -152,7 +161,9 @@ public class Config {
         Enumeration<String> keys = resource.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
+            logger.log(Level.CONFIG, "Load config key: {0}", key);
             properties.put(key, resource.getString(key));
+            firePropertyChange(key, null, resource.getString(key));
         }
     }
 
@@ -162,5 +173,13 @@ public class Config {
      */
     public static Config getInstance() {
         return instance;
+    }
+
+    public void reload() {
+        Enumeration<Object> keys = properties.keys();
+        while (keys.hasMoreElements()) {
+            String key = (String) keys.nextElement();
+            firePropertyChange(key, null, properties.getProperty(key));
+        }
     }
 }
