@@ -1,5 +1,8 @@
 package cz.jfx.CodeAnalyser.Config;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,6 +24,38 @@ public class Config {
     private ResourceBundle defaults = ResourceBundle.getBundle("cz/jfx/CodeAnalyser/Config/defaults");
     private Properties properties = new Properties();
     private static final Logger logger = Logger.getLogger(Config.class.getName());
+    protected transient PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+
+    /**
+     * Adds a property change listener 
+     * @param propertyName
+     * @param listener 
+     */
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(propertyName, listener);
+    }
+
+    /**
+     * Removes the property change listner by propertyName
+     * @param propertyName
+     * @param listener 
+     */
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(propertyName, listener);
+    }
+
+    /**
+     * Fire property change listener
+     * @param propertyName
+     * @param oldValue
+     * @param newValue 
+     */
+    public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        if ((oldValue == null && newValue == null) || oldValue.equals(newValue)) {
+            return;
+        }
+        changeSupport.firePropertyChange(new PropertyChangeEvent(this, propertyName, oldValue, newValue));
+    }
 
     /**
      * Gets a application config value
@@ -36,9 +71,9 @@ public class Config {
     }
 
     /**
-     * Gets a custom(defaul) setting value
+     * Gets a custom setting value
      * @param key
-     * @return 
+     * @return String or null
      */
     public static String getProperty(String key) {
         if (instance.properties.containsKey(key)) {
@@ -49,9 +84,22 @@ public class Config {
     }
 
     /**
-     * Sets a Object o to String key
+     * Gets a custom or default setting value
      * @param key
-     * @param o 
+     * @return String
+     */
+    public static String getProperty(String key, String defaultValue) {
+        if (instance.properties.containsKey(key)) {
+            return instance.properties.getProperty(key, defaultValue);
+        }
+        logger.log(Level.CONFIG, "Key {0} not found in properties", key);
+        return null;
+    }
+
+    /**
+     * Sets a Object o to String key
+     * @param String key
+     * @param Object o 
      */
     public static void saveProperty(String key, Object o) {
         instance.properties.put(key, o);
@@ -88,9 +136,9 @@ public class Config {
      */
     public void store(String filename) {
         try {
-            FileOutputStream f = new FileOutputStream(filename);
-            properties.store(f, "CodeAnalyse: settings");
-            f.close();
+            try (FileOutputStream f = new FileOutputStream(filename)) {
+                properties.store(f, "CodeAnalyse: settings");
+            }
         } catch (IOException e) {
             logger.log(Level.CONFIG, "Store fail: {0}", e.getMessage());
         }
